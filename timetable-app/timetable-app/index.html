@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>המערכת שלי</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#25467E">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="המערכת שלי">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Suez+One&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EBF2F6;
+    --card:#FFFFFF;
+    --ink:#1E355E;
+    --soft:#5F7590;
+    --line:#D2DFE8;
+    --amber:#F0C96B;
+    --amber-deep:#E0AE3C;
+    --leaf:#4C9A6E;
+    --navy:#25467E;
+    --now:#C4402C;
+    --radius:16px;
+    --chip-bg:hsl(var(--h,205) 42% 94%);
+    --chip-line:hsl(var(--h,205) 34% 80%);
+    --chip-ink:hsl(var(--h,205) 45% 30%);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#101820; --card:#18222D; --ink:#E9EFF5; --soft:#95A6B8; --line:#28343F;
+      --amber:#D8B25C; --amber-deep:#E5C071; --leaf:#5BB183; --navy:#5E8AD0; --now:#F0715C;
+      --chip-bg:hsl(var(--h,205) 24% 20%); --chip-line:hsl(var(--h,205) 22% 33%); --chip-ink:hsl(var(--h,205) 50% 78%);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#101820; --card:#18222D; --ink:#E9EFF5; --soft:#95A6B8; --line:#28343F;
+    --amber:#D8B25C; --amber-deep:#E5C071; --leaf:#5BB183; --navy:#5E8AD0; --now:#F0715C;
+    --chip-bg:hsl(var(--h,205) 24% 20%); --chip-line:hsl(var(--h,205) 22% 33%); --chip-ink:hsl(var(--h,205) 50% 78%);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Assistant","Segoe UI",Arial,sans-serif;
+       font-size:17px;line-height:1.45;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+  .wrap{max-width:780px;margin:0 auto;padding:14px 16px 44px}
+  button{font-family:inherit}
+
+  /* header */
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .clock{font-family:"Suez One",serif;font-size:clamp(34px,11vw,48px);line-height:1;font-feature-settings:"tnum" 1}
+  .dateline{color:var(--soft);font-size:15px;margin-top:5px}
+  .icon-btn{background:var(--card);border:1px solid var(--line);color:var(--soft);
+            width:44px;height:44px;border-radius:50%;font-size:19px;cursor:pointer;flex:none}
+  .status{margin:12px 0 0;font-size:16px;color:var(--soft);min-height:24px}
+  .status b{color:var(--ink)}
+  .status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--now);margin-inline-end:7px;vertical-align:middle}
+
+  /* orbs */
+  .dial{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:20px 0 10px}
+  .orb{width:clamp(146px,42vw,186px);aspect-ratio:1;border-radius:50%;border:0;cursor:pointer;
+       display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+       padding:14px;gap:3px;color:#fff;box-shadow:0 6px 18px rgba(30,53,94,.18)}
+  .orb b{font-size:clamp(20px,5.5vw,23px);font-weight:800;line-height:1.15}
+  .orb span{font-size:13.5px;opacity:.85;font-weight:600}
+  .orb:active{transform:scale(.97)}
+  .orb-a{background:var(--navy)}
+  .orb-b{background:var(--amber);color:#3A2C05}
+  .orb-c{background:var(--leaf)}
+  .home-foot{text-align:center;margin-top:6px}
+  .linkbtn{background:none;border:0;color:var(--soft);font:inherit;font-size:16px;text-decoration:underline;cursor:pointer;padding:8px}
+  .sync{font-size:13px;color:var(--soft);text-align:center;margin-top:14px}
+
+  /* view chrome */
+  .hidden{display:none !important}
+  .vhead{display:flex;align-items:center;gap:8px;margin:2px 0 14px}
+  .vhead h2{font-family:"Suez One",serif;font-size:23px;font-weight:400;margin:0;flex:1}
+  .back{background:none;border:0;font:inherit;font-size:24px;color:var(--soft);cursor:pointer;padding:4px 8px}
+  .ghost{background:none;border:1px solid var(--line);border-radius:999px;color:var(--ink);
+         font:inherit;font-size:15px;padding:7px 14px;cursor:pointer}
+  .ghost:active{background:var(--card)}
+
+  /* rows */
+  .rows{display:flex;flex-direction:column;gap:8px}
+  .row{display:flex;gap:12px;align-items:stretch;text-align:start;width:100%;
+       background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+       padding:12px 14px;font:inherit;color:inherit;cursor:pointer}
+  .row .t{flex:none;width:58px;text-align:center;font-feature-settings:"tnum" 1;
+          display:flex;flex-direction:column;justify-content:center;
+          border-inline-end:1px solid var(--line);padding-inline-end:10px}
+  .row .t b{font-size:18px;font-weight:700;display:block}
+  .row .t span{font-size:13px;color:var(--soft)}
+  .row .b{flex:1;min-width:0}
+  .row .b h3{margin:0;font-size:19px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .row .b h3::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--chip-ink);flex:none}
+  .row .b p{margin:2px 0 0;font-size:15px;color:var(--soft)}
+  .row.done{opacity:.42}
+  .row.live{background:var(--chip-bg);border-color:var(--chip-line)}
+  .row.duty{border-style:dashed;--h:42}
+  .row.duty .b h3::before{border-radius:50%}
+  .row.once{border-color:var(--leaf)}
+  .badge{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--chip-bg);color:var(--chip-ink)}
+  .badge.live{background:var(--now);color:#fff}
+  .badge.once{background:var(--leaf);color:#fff}
+
+  .big-next{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:10px}
+  .big-next .when{font-size:15px;color:var(--soft);margin:0 0 3px}
+  .big-next h3{margin:0;font-size:25px;font-weight:800}
+  .big-next p{margin:3px 0 0;font-size:16px;color:var(--soft)}
+  .big-next.first{border-color:var(--navy);border-width:2px}
+
+  .thread{display:flex;align-items:center;gap:9px;margin:4px 0;color:var(--now)}
+  .thread b{font-size:14px;font-weight:700;font-feature-settings:"tnum" 1}
+  .thread i{flex:1;height:2px;background:var(--now);border-radius:2px;display:block}
+  .thread em{width:9px;height:9px;border-radius:50%;background:var(--now);display:block;flex:none}
+
+  /* week */
+  .week{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+  .day{flex:0 0 165px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);
+       border-radius:var(--radius);padding:10px;display:flex;flex-direction:column;gap:7px}
+  .day.is-today{border-color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
+  .day header{display:flex;align-items:baseline;justify-content:space-between;gap:6px;
+              background:var(--amber);color:#3A2C05;border-radius:9px;padding:5px 9px}
+  .day header h3{margin:0;font-size:16px;font-weight:800}
+  .day header small{font-size:12px;opacity:.8}
+  .cell{background:var(--chip-bg);border:1px solid var(--chip-line);border-radius:10px;
+        padding:7px 9px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}
+  .cell b{display:block;font-size:15px;line-height:1.25}
+  .cell small{display:block;font-size:12px;color:var(--soft);font-feature-settings:"tnum" 1;margin-top:2px}
+  .cell.duty{border-style:dashed}
+  .cell.once{border-color:var(--leaf)}
+  .cell.live{outline:2px solid var(--now);outline-offset:1px}
+  .day .add{background:none;border:1px dashed var(--line);border-radius:10px;color:var(--soft);
+            font:inherit;font-size:14px;padding:7px;cursor:pointer}
+
+  .empty{text-align:center;color:var(--soft);padding:30px 12px}
+  .empty p{margin:0 0 14px}
+  .cta{background:var(--navy);color:#fff;border:0;border-radius:999px;font:inherit;font-weight:700;
+       font-size:17px;padding:13px 24px;cursor:pointer}
+  .cta:active{transform:translateY(1px)}
+  .note{font-size:14px;color:var(--soft);margin-top:14px;line-height:1.5}
+
+  /* sheet */
+  .scrim{position:fixed;inset:0;background:rgba(15,25,40,.5);display:flex;align-items:flex-end;justify-content:center;z-index:30}
+  .sheet{background:var(--card);width:100%;max-width:560px;border-radius:20px 20px 0 0;
+         padding:18px 18px calc(20px + env(safe-area-inset-bottom));max-height:92vh;overflow-y:auto;border:1px solid var(--line)}
+  @media(min-width:620px){.scrim{align-items:center}.sheet{border-radius:20px}}
+  .sheet h3{margin:0 0 14px;font-family:"Suez One",serif;font-weight:400;font-size:21px}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:14px;color:var(--soft);margin-bottom:5px}
+  .field input,.field select{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--paper);
+       border:1px solid var(--line);border-radius:11px;padding:12px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .seg{display:flex;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:14px}
+  .seg button{flex:1;background:none;border:0;border-radius:9px;font:inherit;font-size:15px;font-weight:600;
+              color:var(--soft);padding:9px 4px;cursor:pointer}
+  .seg button.on{background:var(--navy);color:#fff}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .chips button{background:var(--paper);border:1px solid var(--line);border-radius:999px;font:inherit;
+                font-size:13px;color:var(--soft);padding:6px 11px;cursor:pointer;font-feature-settings:"tnum" 1}
+  .sheet-actions{display:flex;gap:10px;margin-top:18px;align-items:center}
+  .sheet-actions .cta{flex:1}
+  .danger{background:none;border:0;color:var(--now);font:inherit;font-size:16px;cursor:pointer;padding:10px}
+  .menu-list{display:flex;flex-direction:column;gap:9px}
+  .menu-list button{background:var(--paper);border:1px solid var(--line);border-radius:12px;
+                    font:inherit;font-size:17px;font-weight:600;color:var(--ink);padding:14px;text-align:start;cursor:pointer}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div>
+      <div class="clock" id="clock">--:--</div>
+      <div class="dateline" id="dateline"></div>
+    </div>
+    <button class="icon-btn" id="btn-settings" aria-label="הגדרות">⚙</button>
+  </div>
+
+  <section id="v-home">
+    <p class="status" id="status"></p>
+    <div class="dial">
+      <button class="orb orb-a" data-go="today"><b>מה היום?</b><span>כל השעות של היום</span></button>
+      <button class="orb orb-b" data-go="week"><b>מערכת שבועית</b><span>כל השבוע</span></button>
+      <button class="orb orb-c" data-go="next"><b>השעתיים הבאות</b><span>מה מחכה לי עכשיו</span></button>
+    </div>
+    <div class="home-foot"><button class="linkbtn" id="open-add">הוספה ועריכה</button></div>
+    <p class="sync" id="sync"></p>
+  </section>
+
+  <section id="v-today" class="hidden">
+    <div class="vhead">
+      <button class="back" data-go="home" aria-label="חזרה">→</button>
+      <h2 id="today-title">היום</h2>
+      <button class="ghost" id="add-today">הוספה</button>
+    </div>
+    <div id="today-list"></div>
+  </section>
+
+  <section id="v-week" class="hidden">
+    <div class="vhead">
+      <button class="back" data-go="home" aria-label="חזרה">→</button>
+      <h2>מערכת שבועית</h2>
+    </div>
+    <div class="week" id="week"></div>
+    <p class="note">לחיצה על שיעור פותחת אותו לעריכה. שיעור עם מסגרת מקווקוות הוא תורנות, ומסגרת ירוקה היא אירוע חד־פעמי.</p>
+  </section>
+
+  <section id="v-next" class="hidden">
+    <div class="vhead">
+      <button class="back" data-go="home" aria-label="חזרה">→</button>
+      <h2>השעתיים הבאות</h2>
+    </div>
+    <div id="next-list"></div>
+  </section>
+
+</div>
+
+<datalist id="subjects"></datalist>
+<datalist id="classes"></datalist>
+<datalist id="rooms"></datalist>
+<div id="modal"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DAYS = ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
+  var HUES = [205,28,262,8,168,96,330,45,190,315,120,350];
+  var BELLS = [["08:00","08:50"],["08:50","09:40"],["10:15","11:00"],["11:00","11:45"],["12:40","12:55"],["12:55","13:40"]];
+  var BREAKS = [["09:40","10:15"],["11:45","12:40"],["13:40","14:00"]];
+  var LS_KEY = "teacher-timetable-v2";
+
+  var SEED = [
+    [0,0,"גיאוגרפיה"],[0,1,"מדע וטכנולוגיה"],[0,2,"מדע וטכנולוגיה"],[0,3,"שפה – קריאה"],[0,4,"מתמטיקה"],[0,5,"שפה – הבנת הנקרא"],
+    [1,0,"קר\"ב"],[1,1,"קר\"ב"],[1,2,"אנגלית"],[1,3,"כישורי חיים"],[1,4,"גיאומטריה"],[1,5,"מתמטיקה"],
+    [2,0,"אנגלית"],[2,1,"היסטוריה"],[2,2,"שפה – לשון"],[2,3,"תנ\"ך"],[2,4,"מורשת"],[2,5,"שפה – הבנת הנשמע"],
+    [3,0,"מדע וטכנולוגיה"],[3,1,"שפה – כתיבה"],[3,2,"גיאומטריה"],[3,3,"חינוך גופני"],[3,4,"מתמטיקה"],[3,5,"מדע וטכנולוגיה"],
+    [4,0,"מחשבים"],[4,1,"מתמטיקה"],[4,2,"תנ\"ך"],[4,3,"אנגלית"],[4,4,"אנגלית"],[4,5,"מתמטיקה"],
+    [5,0,"חינוך גופני"],[5,1,"מחשבים + שפה – הבנת הנקרא"],[5,2,"אהב\"ה"],[5,3,"אהב\"ה"]
+  ];
+
+  var state = { items: [], updatedAt: 0 };
+  var view = "home";
+  var lastMinute = -1;
+
+  function $(s){ return document.querySelector(s); }
+  function el(t,c,x){ var n=document.createElement(t); if(c) n.className=c; if(x!=null) n.textContent=x; return n; }
+  function pad(n){ return (n<10?"0":"")+n; }
+  function toMin(t){ if(!t) return 0; var p=String(t).split(":"); return (+p[0])*60+(+(p[1]||0)); }
+  function fmt(t){ return t||"--:--"; }
+  function uid(){ return "i"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+  function hue(s){ var h=0,i; s=String(s||""); for(i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return HUES[h%HUES.length]; }
+  function dateKey(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+  function addDays(d,n){ var x=new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+  function nowMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
+  function minutesText(m){
+    if(m<1) return "פחות מדקה";
+    if(m<60) return m+" דק'";
+    var h=Math.floor(m/60), r=m%60;
+    return h+" שע'"+(r?" ו-"+r+" דק'":"");
+  }
+  function byTime(a,b){ return toMin(a.start)-toMin(b.start); }
+
+  function itemsFor(date){
+    var dk = dateKey(date), wd = date.getDay();
+    return state.items.filter(function(it){
+      if(it.type==="once") return it.date===dk;
+      return it.day===wd;
+    }).sort(byTime);
+  }
+
+  /* ---------- storage ---------- */
+  function seedItems(){
+    var out=[], i;
+    for(i=0;i<SEED.length;i++){
+      var s=SEED[i], b=BELLS[s[1]];
+      out.push({id:uid(), type:"lesson", day:s[0], start:b[0], end:b[1], subject:s[2], cls:"", room:"", note:""});
+    }
+    return out;
+  }
+  function loadLocal(){
+    try{
+      var raw = localStorage.getItem(LS_KEY);
+      if(raw){
+        var o=JSON.parse(raw);
+        if(o && Array.isArray(o.items)){ state=o; return; }
+      }
+    }catch(e){}
+    state = { items: seedItems(), updatedAt: Date.now() };
+    saveLocal();
+  }
+  function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+  function persist(){ state.updatedAt=Date.now(); saveLocal(); renderAll(); }
+
+  /* ---------- clock ---------- */
+  function tick(){
+    var d=new Date();
+    $("#clock").textContent = pad(d.getHours())+":"+pad(d.getMinutes());
+    $("#dateline").textContent = d.toLocaleDateString("he-IL",{weekday:"long",day:"numeric",month:"long"});
+    var m=d.getHours()*60+d.getMinutes();
+    if(m!==lastMinute){ lastMinute=m; renderAll(); }
+  }
+
+  /* ---------- lookups ---------- */
+  function currentItem(){
+    var m=nowMin(), list=itemsFor(new Date()), i;
+    for(i=0;i<list.length;i++) if(toMin(list[i].start)<=m && m<toMin(list[i].end)) return list[i];
+    return null;
+  }
+  function upcoming(n){
+    var out=[], m=nowMin(), i, k;
+    for(k=0;k<8 && out.length<n;k++){
+      var date = addDays(new Date(), k);
+      var list = itemsFor(date);
+      for(i=0;i<list.length && out.length<n;i++){
+        if(k===0 && toMin(list[i].start)<=m) continue;
+        out.push({ item:list[i], date:date, offset:k });
+      }
+    }
+    return out;
+  }
+  function whenLabel(offset, date){
+    if(offset===0) return "היום";
+    if(offset===1) return "מחר";
+    return "יום " + DAYS[date.getDay()];
+  }
+
+  /* ---------- home ---------- */
+  function renderHome(){
+    var box=$("#status"), cur=currentItem(), up=upcoming(1);
+    box.innerHTML="";
+    if(cur){
+      var dot=el("span","dot");
+      box.appendChild(dot);
+      var b=el("b",null,cur.subject);
+      box.appendChild(document.createTextNode("עכשיו "));
+      box.appendChild(b);
+      box.appendChild(document.createTextNode(" · עד " + fmt(cur.end) + " (" + minutesText(toMin(cur.end)-nowMin()) + ")"));
+    } else if(up.length && up[0].offset===0){
+      box.appendChild(document.createTextNode("בעוד " + minutesText(toMin(up[0].item.start)-nowMin()) + ": "));
+      box.appendChild(el("b",null,up[0].item.subject));
+      box.appendChild(document.createTextNode(" ב-" + fmt(up[0].item.start)));
+    } else if(up.length){
+      box.appendChild(document.createTextNode("סיימת להיום. "));
+      box.appendChild(el("b",null, whenLabel(up[0].offset, up[0].date)));
+      box.appendChild(document.createTextNode(" מתחילים ב-" + fmt(up[0].item.start)));
+    } else {
+      box.appendChild(document.createTextNode("אין שיעורים במערכת."));
+    }
+  }
+
+  /* ---------- shared row ---------- */
+  function rowFor(it, date, opts){
+    opts = opts||{};
+    var isToday = dateKey(date)===dateKey(new Date());
+    var m=nowMin(), live = isToday && toMin(it.start)<=m && m<toMin(it.end);
+    var btn=el("button","row"+(it.type==="duty"?" duty":"")+(it.type==="once"?" once":""));
+    if(it.type!=="duty") btn.style.setProperty("--h", hue(it.subject));
+    if(live) btn.classList.add("live");
+    else if(isToday && opts.dim && toMin(it.end)<=m) btn.classList.add("done");
+    btn.onclick=function(){ openEditor(it); };
+
+    var t=el("div","t");
+    t.appendChild(el("b",null,fmt(it.start)));
+    t.appendChild(el("span",null,fmt(it.end)));
+    btn.appendChild(t);
+
+    var b=el("div","b");
+    var h=el("h3");
+    h.appendChild(document.createTextNode(it.subject||"שיעור"));
+    if(live) h.appendChild(el("span","badge live","עכשיו"));
+    else if(it.type==="once") h.appendChild(el("span","badge once","חד־פעמי"));
+    else if(it.type==="duty") h.appendChild(el("span","badge","תורנות"));
+    b.appendChild(h);
+    var sub=[];
+    if(opts.showDay) sub.push(whenLabel(opts.offset, date));
+    if(it.cls) sub.push("כיתה "+it.cls);
+    if(it.room) sub.push("חדר "+it.room);
+    if(it.note) sub.push(it.note);
+    b.appendChild(el("p",null, sub.join(" · ") || (fmt(it.start)+"–"+fmt(it.end))));
+    btn.appendChild(b);
+    return btn;
+  }
+
+  function nowThread(){
+    var d=new Date(), w=el("div","thread");
+    w.appendChild(el("em"));
+    w.appendChild(el("b",null,pad(d.getHours())+":"+pad(d.getMinutes())));
+    w.appendChild(el("i"));
+    return w;
+  }
+
+  /* ---------- today ---------- */
+  function renderToday(){
+    var today=new Date(), list=itemsFor(today), box=$("#today-list");
+    $("#today-title").textContent = "יום " + DAYS[today.getDay()] + ", " + today.toLocaleDateString("he-IL",{day:"numeric",month:"numeric"});
+    box.innerHTML="";
+    if(!list.length){
+      var e=el("div","empty");
+      e.appendChild(el("p",null,"אין שיעורים ביום " + DAYS[today.getDay()] + "."));
+      var b=el("button","cta","הוספה ליום הזה");
+      b.onclick=function(){ openEditor(null,{day:today.getDay()}); };
+      e.appendChild(b); box.appendChild(e); return;
+    }
+    var rows=el("div","rows"), m=nowMin(), placed=false, i;
+    for(i=0;i<list.length;i++){
+      if(!placed && m<toMin(list[i].start)){ rows.appendChild(nowThread()); placed=true; }
+      rows.appendChild(rowFor(list[i], today, {dim:true}));
+    }
+    if(!placed) rows.appendChild(nowThread());
+    box.appendChild(rows);
+  }
+
+  /* ---------- next two ---------- */
+  function renderNext(){
+    var box=$("#next-list"); box.innerHTML="";
+    var cur=currentItem(), next=upcoming(2), i;
+
+    if(cur){
+      var c=el("div","big-next");
+      c.appendChild(el("p","when","עכשיו · עד " + fmt(cur.end)));
+      c.appendChild(el("h3",null,cur.subject));
+      c.appendChild(el("p",null,"נשארו " + minutesText(toMin(cur.end)-nowMin())));
+      box.appendChild(c);
+    }
+    if(!next.length){
+      box.appendChild(el("p","note","אין שיעורים נוספים בימים הקרובים."));
+      return;
+    }
+    for(i=0;i<next.length;i++){
+      var n=next[i], card=el("div","big-next"+(i===0?" first":""));
+      var when = (n.offset===0 ? "בעוד " + minutesText(toMin(n.item.start)-nowMin()) : whenLabel(n.offset,n.date)) +
+                 " · " + fmt(n.item.start) + "–" + fmt(n.item.end);
+      card.appendChild(el("p","when", when));
+      var title=el("h3"); title.appendChild(document.createTextNode(n.item.subject||"שיעור"));
+      if(n.item.type==="once") title.appendChild(el("span","badge once","חד־פעמי"));
+      if(n.item.type==="duty") title.appendChild(el("span","badge","תורנות"));
+      card.appendChild(title);
+      var sub=[];
+      if(n.item.cls) sub.push("כיתה "+n.item.cls);
+      if(n.item.room) sub.push("חדר "+n.item.room);
+      if(n.item.note) sub.push(n.item.note);
+      if(sub.length) card.appendChild(el("p",null,sub.join(" · ")));
+      card.onclick=(function(it){ return function(){ openEditor(it); }; })(n.item);
+      card.style.cursor="pointer";
+      box.appendChild(card);
+    }
+  }
+
+  /* ---------- week ---------- */
+  function renderWeek(){
+    var wrap=$("#week"); wrap.innerHTML="";
+    var today=new Date(), m=nowMin();
+    var sunday=addDays(today, -today.getDay());
+    var days=[0,1,2,3,4,5];
+    if(itemsFor(addDays(sunday,6)).length) days.push(6);
+
+    days.forEach(function(d){
+      var date=addDays(sunday,d), list=itemsFor(date), isToday=(dateKey(date)===dateKey(today));
+      var col=el("div","day"+(isToday?" is-today":""));
+      var head=el("header");
+      head.appendChild(el("h3",null,DAYS[d]));
+      head.appendChild(el("small",null, date.getDate()+"/"+(date.getMonth()+1)));
+      col.appendChild(head);
+
+      list.forEach(function(it){
+        var c=el("button","cell"+(it.type==="duty"?" duty":"")+(it.type==="once"?" once":""));
+        if(it.type!=="duty") c.style.setProperty("--h",hue(it.subject));
+        if(isToday && toMin(it.start)<=m && m<toMin(it.end)) c.classList.add("live");
+        c.appendChild(el("b",null,it.subject||"שיעור"));
+        var meta=[];
+        if(it.cls) meta.push("כיתה "+it.cls);
+        if(it.room) meta.push("חדר "+it.room);
+        c.appendChild(el("small",null, fmt(it.start)+"–"+fmt(it.end) + (meta.length?" · "+meta.join(" · "):"")));
+        c.onclick=function(){ openEditor(it); };
+        col.appendChild(c);
+      });
+
+      var add=el("button","add","+ הוספה");
+      add.onclick=function(){ openEditor(null,{day:d, date:dateKey(date)}); };
+      col.appendChild(add);
+      wrap.appendChild(col);
+    });
+
+    var t=wrap.querySelector(".is-today");
+    if(t && wrap.scrollWidth>wrap.clientWidth){
+      wrap.scrollLeft = t.offsetLeft - wrap.offsetLeft - (wrap.clientWidth-t.clientWidth)/2;
+    }
+  }
+
+  function refreshDatalists(){
+    [["#subjects","subject"],["#classes","cls"],["#rooms","room"]].forEach(function(p){
+      var dl=$(p[0]); if(!dl) return;
+      var seen={}, vals=[];
+      state.items.forEach(function(it){ var v=it[p[1]]; if(v && !seen[v]){seen[v]=1;vals.push(v);} });
+      dl.innerHTML="";
+      vals.sort().forEach(function(v){ var o=document.createElement("option"); o.value=v; dl.appendChild(o); });
+    });
+  }
+
+  function renderAll(){
+    refreshDatalists();
+    if(view==="home") renderHome();
+    if(view==="today") renderToday();
+    if(view==="week") renderWeek();
+    if(view==="next") renderNext();
+  }
+
+  /* ---------- sheets ---------- */
+  function closeModal(){ $("#modal").innerHTML=""; }
+  function sheet(title){
+    var scrim=el("div","scrim");
+    scrim.onclick=function(e){ if(e.target===scrim) closeModal(); };
+    var s=el("div","sheet");
+    s.appendChild(el("h3",null,title));
+    scrim.appendChild(s);
+    $("#modal").innerHTML=""; $("#modal").appendChild(scrim);
+    return s;
+  }
+  function field(label,node){ var f=el("div","field"); f.appendChild(el("label",null,label)); f.appendChild(node); return f; }
+
+  function openEditor(item, prefill){
+    prefill = prefill||{};
+    var isNew=!item;
+    var d=new Date();
+    var data = item ? JSON.parse(JSON.stringify(item)) : {
+      id:uid(), type:"lesson",
+      day: prefill.day!=null ? prefill.day : d.getDay(),
+      date: prefill.date || dateKey(d),
+      start:"08:00", end:"08:50", subject:"", cls:"", room:"", note:""
+    };
+    if(!data.date) data.date = dateKey(d);
+    if(data.day==null) data.day = d.getDay();
+
+    var s=sheet(isNew ? "הוספה למערכת" : "עריכה");
+
+    var seg=el("div","seg"), typeBtns={};
+    [["lesson","שיעור"],["duty","תורנות"],["once","חד־פעמי"]].forEach(function(p){
+      var b=el("button",null,p[1]); b.type="button";
+      b.onclick=function(){ setType(p[0]); };
+      typeBtns[p[0]]=b; seg.appendChild(b);
+    });
+    s.appendChild(seg);
+
+    var subject=el("input"); subject.type="text"; subject.value=data.subject; subject.setAttribute("list","subjects");
+    var fSubject=field("מה זה?", subject); s.appendChild(fSubject);
+
+    var two1=el("div","two");
+    var cls=el("input"); cls.type="text"; cls.value=data.cls; cls.setAttribute("list","classes"); cls.placeholder="ויתור 2";
+    var room=el("input"); room.type="text"; room.value=data.room; room.setAttribute("list","rooms"); room.placeholder="חצר / 14";
+    two1.appendChild(field("כיתה",cls)); two1.appendChild(field("מקום",room));
+    s.appendChild(two1);
+
+    var daySel=el("select");
+    DAYS.forEach(function(name,i){ var o=document.createElement("option"); o.value=i; o.textContent="יום "+name; if(i===data.day)o.selected=true; daySel.appendChild(o); });
+    var fDay=field("יום בשבוע (חוזר כל שבוע)", daySel); s.appendChild(fDay);
+
+    var dateIn=el("input"); dateIn.type="date"; dateIn.value=data.date;
+    var fDate=field("תאריך", dateIn); s.appendChild(fDate);
+
+    var two2=el("div","two");
+    var start=el("input"); start.type="time"; start.value=data.start; start.step=300;
+    var end=el("input"); end.type="time"; end.value=data.end; end.step=300;
+    two2.appendChild(field("משעה",start)); two2.appendChild(field("עד שעה",end));
+    s.appendChild(two2);
+
+    var chips=el("div","chips"); s.appendChild(chips);
+    function fillChips(t){
+      chips.innerHTML="";
+      var src = (t==="duty") ? BREAKS : BELLS;
+      src.forEach(function(b,i){
+        var c=el("button",null,(t==="duty" ? "הפסקה "+(i+1) : "שיעור "+(i+1)) + " · " + b[0]);
+        c.type="button";
+        c.onclick=function(){ start.value=b[0]; end.value=b[1]; };
+        chips.appendChild(c);
+      });
+    }
+
+    var note=el("input"); note.type="text"; note.value=data.note||"";
+    s.appendChild(field("הערה",note));
+
+    function setType(t){
+      data.type=t;
+      for(var k in typeBtns) typeBtns[k].classList.toggle("on", k===t);
+      fDay.classList.toggle("hidden", t==="once");
+      fDate.classList.toggle("hidden", t!=="once");
+      fillChips(t);
+      if(t==="duty" && !subject.value) subject.value="תורנות הפסקה";
+      subject.placeholder = t==="duty" ? "תורנות הפסקה" : (t==="once" ? "אסיפת הורים / מבחן" : "מתמטיקה");
+    }
+    setType(data.type||"lesson");
+
+    var actions=el("div","sheet-actions");
+    var save=el("button","cta","שמירה");
+    save.onclick=function(){
+      data.subject=subject.value.trim();
+      data.cls=cls.value.trim(); data.room=room.value.trim(); data.note=note.value.trim();
+      data.day=parseInt(daySel.value,10);
+      data.date=dateIn.value || dateKey(new Date());
+      data.start=start.value||"08:00";
+      data.end=end.value||data.start;
+      if(!data.subject){ subject.focus(); subject.placeholder="צריך למלא שם"; return; }
+      if(toMin(data.end)<=toMin(data.start)){
+        var t2=toMin(data.start)+45;
+        data.end=pad(Math.floor(t2/60)%24)+":"+pad(t2%60);
+      }
+      if(data.type==="once") data.day=new Date(data.date+"T00:00:00").getDay();
+      var idx=-1,i;
+      for(i=0;i<state.items.length;i++) if(state.items[i].id===data.id){ idx=i; break; }
+      if(idx>=0) state.items[idx]=data; else state.items.push(data);
+      closeModal(); persist();
+    };
+    actions.appendChild(save);
+
+    if(!isNew){
+      var dup=el("button","ghost","שכפול");
+      dup.onclick=function(){
+        var c2=JSON.parse(JSON.stringify(data));
+        c2.id=uid(); c2.subject=subject.value.trim(); c2.cls=cls.value.trim(); c2.room=room.value.trim();
+        c2.note=note.value.trim(); c2.start=start.value; c2.end=end.value; c2.day=parseInt(daySel.value,10); c2.date=dateIn.value;
+        closeModal(); openEditor(c2);
+      };
+      actions.appendChild(dup);
+      var del=el("button","danger","מחיקה");
+      del.onclick=function(){
+        state.items=state.items.filter(function(x){ return x.id!==data.id; });
+        closeModal(); persist();
+      };
+      actions.appendChild(del);
+    }
+    s.appendChild(actions);
+    setTimeout(function(){ if(!subject.value) subject.focus(); },80);
+  }
+
+  function openAddMenu(){
+    var s=sheet("מה להוסיף?");
+    var list=el("div","menu-list");
+    var opts=[
+      ["שיעור קבוע במערכת","lesson"],
+      ["תורנות הפסקה (חוזרת כל שבוע)","duty"],
+      ["משהו חד־פעמי לתאריך מסוים","once"]
+    ];
+    opts.forEach(function(o){
+      var b=el("button",null,o[0]);
+      b.onclick=function(){ closeModal(); openEditor(null,{}); setTimeout(function(){
+        var seg=document.querySelector(".seg");
+        if(seg){ var map={lesson:0,duty:1,once:2}; seg.children[map[o[1]]].click(); }
+      },0); };
+      list.appendChild(b);
+    });
+    s.appendChild(list);
+  }
+
+  function openSettings(){
+    var s=sheet("הגדרות וגיבוי");
+    s.appendChild(el("p","note", state.items.length + " פריטים במערכת. הכול נשמר במכשיר הזה ועובד גם בלי אינטרנט."));
+
+    var exp=el("button","cta","שמירת גיבוי");
+    exp.style.width="100%";
+    exp.onclick=function(){ doExport(exp); };
+    s.appendChild(exp);
+
+    var imp=el("input"); imp.type="file"; imp.accept="application/json,.json";
+    imp.onchange=function(){
+      var f=imp.files&&imp.files[0]; if(!f) return;
+      var r=new FileReader();
+      r.onload=function(){
+        try{
+          var o=JSON.parse(r.result);
+          if(o&&Array.isArray(o.items)){ state.items=o.items; closeModal(); persist(); }
+          else alert("הקובץ לא מכיל מערכת שעות.");
+        }catch(e){ alert("לא הצלחתי לקרוא את הקובץ."); }
+      };
+      r.readAsText(f);
+    };
+    s.appendChild(field("שחזור מקובץ גיבוי", imp));
+
+    var reset=el("button","ghost","החזרת המערכת המקורית");
+    reset.style.width="100%";
+    reset.onclick=function(){
+      if(confirm("להחזיר את המערכת כפי שהוזנה מהתמונה? כל השינויים יימחקו.")){
+        state.items=seedItems(); closeModal(); persist();
+      }
+    };
+    s.appendChild(reset);
+
+    var clear=el("button","danger","מחיקת הכול");
+    clear.style.width="100%";
+    clear.onclick=function(){ if(confirm("למחוק את כל הפריטים?")){ state.items=[]; closeModal(); persist(); } };
+    s.appendChild(clear);
+  }
+
+  function doExport(btn){
+    var payload=JSON.stringify({items:state.items, updatedAt:state.updatedAt}, null, 2);
+    if(window.claude && window.claude.use){
+      window.claude.use("downloads").then(function(dl){
+        if(dl&&dl.save){
+          dl.save({filename:"מערכת-שעות.json", data:payload})
+            .then(function(){ btn.textContent="הגיבוי נשמר"; })
+            .catch(function(){ copyFallback(payload,btn); });
+        } else copyFallback(payload,btn);
+      }).catch(function(){ copyFallback(payload,btn); });
+    } else copyFallback(payload,btn);
+  }
+  function copyFallback(text,btn){
+    try{ navigator.clipboard.writeText(text); btn.textContent="הועתק ללוח"; }
+    catch(e){ btn.textContent="לא הצלחתי לשמור"; }
+  }
+
+  /* ---------- nav ---------- */
+  function go(v){
+    view=v;
+    ["home","today","week","next"].forEach(function(n){
+      var node=document.getElementById("v-"+n);
+      if(node) node.classList.toggle("hidden", n!==v);
+    });
+    window.scrollTo(0,0);
+    renderAll();
+  }
+  document.addEventListener("click", function(e){
+    var t=e.target.closest ? e.target.closest("[data-go]") : null;
+    if(t) go(t.getAttribute("data-go"));
+  });
+  $("#btn-settings").onclick=openSettings;
+  $("#open-add").onclick=openAddMenu;
+  $("#add-today").onclick=function(){ openEditor(null,{day:new Date().getDay(), date:dateKey(new Date())}); };
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeModal(); });
+
+  loadLocal();
+  tick();
+  go("home");
+  setInterval(tick, 1000);
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) tick(); });
+  $("#sync").textContent = "נשמר במכשיר · עובד גם בלי אינטרנט";
+})();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
