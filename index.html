@@ -16,43 +16,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Suez+One&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#EBF2F6;
-    --card:#FFFFFF;
-    --ink:#1E355E;
-    --soft:#5F7590;
-    --line:#D2DFE8;
-    --amber:#F0C96B;
-    --amber-deep:#E0AE3C;
-    --leaf:#4C9A6E;
-    --navy:#25467E;
-    --now:#C4402C;
-    --radius:16px;
-    --chip-bg:hsl(var(--h,205) 42% 94%);
-    --chip-line:hsl(var(--h,205) 34% 80%);
-    --chip-ink:hsl(var(--h,205) 45% 30%);
+    --paper:#EBF2F6; --card:#FFFFFF; --ink:#1E355E; --soft:#5F7590; --line:#D2DFE8;
+    --amber:#F0C96B; --leaf:#4C9A6E; --navy:#25467E; --now:#C4402C; --radius:16px;
+    --chip-bg:hsl(var(--h,205) 42% 94%); --chip-line:hsl(var(--h,205) 34% 80%); --chip-ink:hsl(var(--h,205) 45% 30%);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --paper:#101820; --card:#18222D; --ink:#E9EFF5; --soft:#95A6B8; --line:#28343F;
-      --amber:#D8B25C; --amber-deep:#E5C071; --leaf:#5BB183; --navy:#5E8AD0; --now:#F0715C;
+      --amber:#D8B25C; --leaf:#5BB183; --navy:#5E8AD0; --now:#F0715C;
       --chip-bg:hsl(var(--h,205) 24% 20%); --chip-line:hsl(var(--h,205) 22% 33%); --chip-ink:hsl(var(--h,205) 50% 78%);
     }
   }
   :root[data-theme="dark"]{
     --paper:#101820; --card:#18222D; --ink:#E9EFF5; --soft:#95A6B8; --line:#28343F;
-    --amber:#D8B25C; --amber-deep:#E5C071; --leaf:#5BB183; --navy:#5E8AD0; --now:#F0715C;
+    --amber:#D8B25C; --leaf:#5BB183; --navy:#5E8AD0; --now:#F0715C;
     --chip-bg:hsl(var(--h,205) 24% 20%); --chip-line:hsl(var(--h,205) 22% 33%); --chip-ink:hsl(var(--h,205) 50% 78%);
   }
-
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);font-family:"Assistant","Segoe UI",Arial,sans-serif;
        font-size:17px;line-height:1.45;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
-  .wrap{max-width:780px;margin:0 auto;padding:14px 16px 44px}
+  .wrap{max-width:900px;margin:0 auto;padding:14px 16px 44px}
   button{font-family:inherit}
+  .hidden{display:none !important}
 
-  /* header */
   .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .hello{font-size:15px;color:var(--soft);margin:0 0 2px}
   .clock{font-family:"Suez One",serif;font-size:clamp(34px,11vw,48px);line-height:1;font-feature-settings:"tnum" 1}
   .dateline{color:var(--soft);font-size:15px;margin-top:5px}
   .icon-btn{background:var(--card);border:1px solid var(--line);color:var(--soft);
@@ -61,7 +50,6 @@
   .status b{color:var(--ink)}
   .status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--now);margin-inline-end:7px;vertical-align:middle}
 
-  /* orbs */
   .dial{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:20px 0 10px}
   .orb{width:clamp(146px,42vw,186px);aspect-ratio:1;border-radius:50%;border:0;cursor:pointer;
        display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
@@ -69,23 +57,17 @@
   .orb b{font-size:clamp(20px,5.5vw,23px);font-weight:800;line-height:1.15}
   .orb span{font-size:13.5px;opacity:.85;font-weight:600}
   .orb:active{transform:scale(.97)}
-  .orb-a{background:var(--navy)}
-  .orb-b{background:var(--amber);color:#3A2C05}
-  .orb-c{background:var(--leaf)}
+  .orb-a{background:var(--navy)} .orb-b{background:var(--amber);color:#3A2C05} .orb-c{background:var(--leaf)}
   .home-foot{text-align:center;margin-top:6px}
   .linkbtn{background:none;border:0;color:var(--soft);font:inherit;font-size:16px;text-decoration:underline;cursor:pointer;padding:8px}
   .sync{font-size:13px;color:var(--soft);text-align:center;margin-top:14px}
 
-  /* view chrome */
-  .hidden{display:none !important}
   .vhead{display:flex;align-items:center;gap:8px;margin:2px 0 14px}
   .vhead h2{font-family:"Suez One",serif;font-size:23px;font-weight:400;margin:0;flex:1}
   .back{background:none;border:0;font:inherit;font-size:24px;color:var(--soft);cursor:pointer;padding:4px 8px}
   .ghost{background:none;border:1px solid var(--line);border-radius:999px;color:var(--ink);
          font:inherit;font-size:15px;padding:7px 14px;cursor:pointer}
-  .ghost:active{background:var(--card)}
 
-  /* rows */
   .rows{display:flex;flex-direction:column;gap:8px}
   .row{display:flex;gap:12px;align-items:stretch;text-align:start;width:100%;
        background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
@@ -108,7 +90,7 @@
   .badge.live{background:var(--now);color:#fff}
   .badge.once{background:var(--leaf);color:#fff}
 
-  .big-next{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:10px}
+  .big-next{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:10px;cursor:pointer}
   .big-next .when{font-size:15px;color:var(--soft);margin:0 0 3px}
   .big-next h3{margin:0;font-size:25px;font-weight:800}
   .big-next p{margin:3px 0 0;font-size:16px;color:var(--soft)}
@@ -119,24 +101,27 @@
   .thread i{flex:1;height:2px;background:var(--now);border-radius:2px;display:block}
   .thread em{width:9px;height:9px;border-radius:50%;background:var(--now);display:block;flex:none}
 
-  /* week */
-  .week{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
-  .day{flex:0 0 165px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);
-       border-radius:var(--radius);padding:10px;display:flex;flex-direction:column;gap:7px}
-  .day.is-today{border-color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
-  .day header{display:flex;align-items:baseline;justify-content:space-between;gap:6px;
-              background:var(--amber);color:#3A2C05;border-radius:9px;padding:5px 9px}
-  .day header h3{margin:0;font-size:16px;font-weight:800}
-  .day header small{font-size:12px;opacity:.8}
-  .cell{background:var(--chip-bg);border:1px solid var(--chip-line);border-radius:10px;
-        padding:7px 9px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}
-  .cell b{display:block;font-size:15px;line-height:1.25}
-  .cell small{display:block;font-size:12px;color:var(--soft);font-feature-settings:"tnum" 1;margin-top:2px}
-  .cell.duty{border-style:dashed}
-  .cell.once{border-color:var(--leaf)}
+  /* weekly table */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card)}
+  table.sched{border-collapse:separate;border-spacing:0;width:100%;min-width:640px}
+  table.sched th,table.sched td{border-bottom:1px solid var(--line);padding:5px;vertical-align:top}
+  table.sched thead th{background:var(--amber);color:#3A2C05;font-size:15px;font-weight:800;padding:9px 6px;position:sticky;top:0;z-index:2}
+  table.sched thead th.today{background:var(--navy);color:#fff}
+  table.sched .timecol{position:sticky;inset-inline-start:0;background:var(--card);z-index:3;width:78px;min-width:78px;text-align:center}
+  table.sched thead .timecol{background:var(--amber);z-index:4}
+  table.sched tbody .timecol b{display:block;font-size:17px;font-weight:800}
+  table.sched tbody .timecol span{display:block;font-size:12px;color:var(--soft);font-feature-settings:"tnum" 1}
+  table.sched td{min-width:104px}
+  .cell{display:block;width:100%;height:100%;min-height:52px;background:var(--chip-bg);border:1px solid var(--chip-line);
+        border-radius:10px;padding:7px 8px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}
+  .cell b{display:block;font-size:14.5px;line-height:1.25;font-weight:700}
+  .cell small{display:block;font-size:12px;color:var(--soft);margin-top:2px}
+  .cell.duty{border-style:dashed;--h:42}
+  .cell.once{border-color:var(--leaf);border-width:2px}
   .cell.live{outline:2px solid var(--now);outline-offset:1px}
-  .day .add{background:none;border:1px dashed var(--line);border-radius:10px;color:var(--soft);
-            font:inherit;font-size:14px;padding:7px;cursor:pointer}
+  .cell.blank{background:none;border:1px dashed var(--line);color:var(--soft);text-align:center;
+              display:flex;align-items:center;justify-content:center;font-size:20px}
+  .extra-label{font-size:12px;color:var(--soft);font-weight:700}
 
   .empty{text-align:center;color:var(--soft);padding:30px 12px}
   .empty p{margin:0 0 14px}
@@ -145,7 +130,6 @@
   .cta:active{transform:translateY(1px)}
   .note{font-size:14px;color:var(--soft);margin-top:14px;line-height:1.5}
 
-  /* sheet */
   .scrim{position:fixed;inset:0;background:rgba(15,25,40,.5);display:flex;align-items:flex-end;justify-content:center;z-index:30}
   .sheet{background:var(--card);width:100%;max-width:560px;border-radius:20px 20px 0 0;
          padding:18px 18px calc(20px + env(safe-area-inset-bottom));max-height:92vh;overflow-y:auto;border:1px solid var(--line)}
@@ -160,23 +144,81 @@
   .seg button{flex:1;background:none;border:0;border-radius:9px;font:inherit;font-size:15px;font-weight:600;
               color:var(--soft);padding:9px 4px;cursor:pointer}
   .seg button.on{background:var(--navy);color:#fff}
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-  .chips button{background:var(--paper);border:1px solid var(--line);border-radius:999px;font:inherit;
-                font-size:13px;color:var(--soft);padding:6px 11px;cursor:pointer;font-feature-settings:"tnum" 1}
+  .recent{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .recent button{background:var(--chip-bg);border:1px solid var(--chip-line);color:var(--chip-ink);
+                 border-radius:999px;font:inherit;font-size:14px;font-weight:600;padding:7px 12px;cursor:pointer}
+  .periods{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .periods button{background:var(--paper);border:1px solid var(--line);border-radius:11px;font:inherit;
+                  font-size:13px;color:var(--soft);padding:7px 10px;cursor:pointer;font-feature-settings:"tnum" 1;text-align:center}
+  .periods button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .periods button b{display:block;font-size:15px}
   .sheet-actions{display:flex;gap:10px;margin-top:18px;align-items:center}
   .sheet-actions .cta{flex:1}
   .danger{background:none;border:0;color:var(--now);font:inherit;font-size:16px;cursor:pointer;padding:10px}
   .menu-list{display:flex;flex-direction:column;gap:9px}
   .menu-list button{background:var(--paper);border:1px solid var(--line);border-radius:12px;
                     font:inherit;font-size:17px;font-weight:600;color:var(--ink);padding:14px;text-align:start;cursor:pointer}
+  .prow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .prow b{width:22px;text-align:center;color:var(--soft)}
+  .prow input{flex:1;font:inherit;font-size:16px;background:var(--paper);color:var(--ink);
+              border:1px solid var(--line);border-radius:10px;padding:9px}
+  .prow .x{background:none;border:0;color:var(--now);font-size:20px;cursor:pointer;padding:4px 8px}
+
+  /* onboarding */
+  .ob{max-width:460px;margin:6vh auto 0;text-align:center}
+  .ob h1{font-family:"Suez One",serif;font-weight:400;font-size:30px;margin:0 0 8px}
+  .ob p{color:var(--soft);margin:0 0 22px}
+  .ob input{width:100%;font:inherit;font-size:19px;text-align:center;background:var(--card);color:var(--ink);
+            border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+  .ob .cta{width:100%}
+  .ob .linkbtn{margin-top:16px}
+
+  /* ---- v3: four orbs + guard duty ---- */
+  .dial{display:grid;grid-template-columns:1fr 1fr;justify-items:center;gap:14px;margin:18px 0 8px}
+  .orb{width:clamp(132px,41.5vw,172px)}
+  .orb b{font-size:clamp(18px,5vw,21px)}
+  .orb span{font-size:12.5px}
+  .orb-d{background:#2E7D8F}
+  :root[data-theme="dark"] .orb-d{background:#2A6E7E}
+
+  .gcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+         padding:16px 18px;margin-bottom:10px}
+  .gcard.main{border:2px solid var(--navy)}
+  .gcard .w{font-size:14px;color:var(--soft);font-weight:700}
+  .gcard .names{font-size:27px;font-weight:800;line-height:1.3;margin-top:4px}
+  .gcard .meta{font-size:14px;color:var(--soft);margin-top:6px}
+  .gcard .act{background:none;border:0;color:var(--now);font:inherit;font-size:14px;
+              text-decoration:underline;cursor:pointer;padding:6px 0 0}
+  .gbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 6px}
+  .gbtns button{background:var(--navy);color:#fff;border:0;border-radius:14px;font:inherit;
+                font-size:15px;font-weight:700;padding:13px 8px;cursor:pointer}
+  .gbtns button.alt{background:none;color:var(--ink);border:1px solid var(--line)}
+  .grow{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);
+        border:1px solid var(--line);border-radius:12px;padding:10px 13px;margin-bottom:6px}
+  .grow b{font-size:16px;font-weight:700}
+  .grow span{font-size:14px;color:var(--soft);font-feature-settings:"tnum" 1;white-space:nowrap}
+  .grow.is-today{border-color:var(--navy);border-width:2px}
+  textarea.names{width:100%;min-height:210px;font:inherit;font-size:16px;line-height:1.7;
+                 background:var(--paper);color:var(--ink);border:1px solid var(--line);
+                 border-radius:12px;padding:12px;resize:vertical}
+  .report{white-space:pre-wrap;background:var(--paper);border:1px solid var(--line);border-radius:12px;
+          padding:14px;font-size:15px;line-height:1.75;max-height:44vh;overflow:auto}
+  .chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chiprow span{background:var(--paper);border:1px solid var(--line);border-radius:999px;
+                padding:5px 6px 5px 12px;font-size:13px;color:var(--soft);display:inline-flex;align-items:center;gap:4px}
+  .chiprow span button{background:none;border:0;color:var(--now);font:inherit;font-size:15px;cursor:pointer;padding:0 4px}
+  .cyc{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:7px 2px;border-bottom:1px solid var(--line)}
+  .cyc.on{font-weight:800;color:var(--navy)}
+  .cyc i{color:var(--soft);font-style:normal;font-feature-settings:"tnum" 1}
   @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
 </style>
 </head>
 <body>
-<div class="wrap">
 
+<div class="wrap" id="app-shell">
   <div class="top">
     <div>
+      <p class="hello" id="hello"></p>
       <div class="clock" id="clock">--:--</div>
       <div class="dateline" id="dateline"></div>
     </div>
@@ -189,9 +231,10 @@
       <button class="orb orb-a" data-go="today"><b>מה היום?</b><span>כל השעות של היום</span></button>
       <button class="orb orb-b" data-go="week"><b>מערכת שבועית</b><span>כל השבוע</span></button>
       <button class="orb orb-c" data-go="next"><b>השעתיים הבאות</b><span>מה מחכה לי עכשיו</span></button>
+      <button class="orb orb-d" data-go="guard"><b>שמירות הפסקה</b><span>מי שומר היום ומחר</span></button>
     </div>
     <div class="home-foot"><button class="linkbtn" id="open-add">הוספה ועריכה</button></div>
-    <p class="sync" id="sync"></p>
+    <p class="sync">נשמר במכשיר · עובד גם בלי אינטרנט</p>
   </section>
 
   <section id="v-today" class="hidden">
@@ -208,8 +251,8 @@
       <button class="back" data-go="home" aria-label="חזרה">→</button>
       <h2>מערכת שבועית</h2>
     </div>
-    <div class="week" id="week"></div>
-    <p class="note">לחיצה על שיעור פותחת אותו לעריכה. שיעור עם מסגרת מקווקוות הוא תורנות, ומסגרת ירוקה היא אירוע חד־פעמי.</p>
+    <div id="week"></div>
+    <p class="note">לחיצה על משבצת ריקה מוסיפה שיעור, ולחיצה על שיעור קיים פותחת אותו לעריכה.</p>
   </section>
 
   <section id="v-next" class="hidden">
@@ -220,6 +263,25 @@
     <div id="next-list"></div>
   </section>
 
+  <section id="v-guard" class="hidden">
+    <div class="vhead">
+      <button class="back" data-go="home" aria-label="חזרה">→</button>
+      <h2>שמירות הפסקה</h2>
+      <button class="ghost" id="guard-setup">ניהול</button>
+    </div>
+    <div id="guard-body"></div>
+  </section>
+</div>
+
+<div class="wrap hidden" id="onboarding">
+  <div class="ob">
+    <h1>המערכת שלי</h1>
+    <p>מערכת השעות, התורנויות והאירועים שלך — במקום אחד, בטלפון, בלי הרשמה.</p>
+    <input id="ob-name" type="text" placeholder="איך קוראים לך?" autocomplete="name">
+    <button class="cta" id="ob-start">מתחילים</button>
+    <div><button class="linkbtn" id="ob-restore">יש לי קובץ גיבוי</button></div>
+    <input id="ob-file" type="file" accept="application/json,.json" class="hidden">
+  </div>
 </div>
 
 <datalist id="subjects"></datalist>
@@ -233,20 +295,10 @@
 
   var DAYS = ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
   var HUES = [205,28,262,8,168,96,330,45,190,315,120,350];
-  var BELLS = [["08:00","08:50"],["08:50","09:40"],["10:15","11:00"],["11:00","11:45"],["12:40","12:55"],["12:55","13:40"]];
-  var BREAKS = [["09:40","10:15"],["11:45","12:40"],["13:40","14:00"]];
   var LS_KEY = "teacher-timetable-v2";
+  var DEFAULT_PERIODS = [["08:00","08:50"],["08:50","09:40"],["10:15","11:00"],["11:00","11:45"],["12:40","12:55"],["12:55","13:40"]];
 
-  var SEED = [
-    [0,0,"גיאוגרפיה"],[0,1,"מדע וטכנולוגיה"],[0,2,"מדע וטכנולוגיה"],[0,3,"שפה – קריאה"],[0,4,"מתמטיקה"],[0,5,"שפה – הבנת הנקרא"],
-    [1,0,"קר\"ב"],[1,1,"קר\"ב"],[1,2,"אנגלית"],[1,3,"כישורי חיים"],[1,4,"גיאומטריה"],[1,5,"מתמטיקה"],
-    [2,0,"אנגלית"],[2,1,"היסטוריה"],[2,2,"שפה – לשון"],[2,3,"תנ\"ך"],[2,4,"מורשת"],[2,5,"שפה – הבנת הנשמע"],
-    [3,0,"מדע וטכנולוגיה"],[3,1,"שפה – כתיבה"],[3,2,"גיאומטריה"],[3,3,"חינוך גופני"],[3,4,"מתמטיקה"],[3,5,"מדע וטכנולוגיה"],
-    [4,0,"מחשבים"],[4,1,"מתמטיקה"],[4,2,"תנ\"ך"],[4,3,"אנגלית"],[4,4,"אנגלית"],[4,5,"מתמטיקה"],
-    [5,0,"חינוך גופני"],[5,1,"מחשבים + שפה – הבנת הנקרא"],[5,2,"אהב\"ה"],[5,3,"אהב\"ה"]
-  ];
-
-  var state = { items: [], updatedAt: 0 };
+  var state = null;
   var view = "home";
   var lastMinute = -1;
 
@@ -254,6 +306,7 @@
   function el(t,c,x){ var n=document.createElement(t); if(c) n.className=c; if(x!=null) n.textContent=x; return n; }
   function pad(n){ return (n<10?"0":"")+n; }
   function toMin(t){ if(!t) return 0; var p=String(t).split(":"); return (+p[0])*60+(+(p[1]||0)); }
+  function fromMin(m){ m=((m%1440)+1440)%1440; return pad(Math.floor(m/60))+":"+pad(m%60); }
   function fmt(t){ return t||"--:--"; }
   function uid(){ return "i"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
   function hue(s){ var h=0,i; s=String(s||""); for(i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return HUES[h%HUES.length]; }
@@ -268,60 +321,94 @@
   }
   function byTime(a,b){ return toMin(a.start)-toMin(b.start); }
 
-  function itemsFor(date){
-    var dk = dateKey(date), wd = date.getDay();
-    return state.items.filter(function(it){
-      if(it.type==="once") return it.date===dk;
-      return it.day===wd;
-    }).sort(byTime);
+  /* ---------- state ---------- */
+  function defaults(){
+    return { profile:{name:""}, periods: DEFAULT_PERIODS.map(function(p,i){ return {n:i+1,start:p[0],end:p[1]}; }),
+             items:[], guard: gdefaults(), updatedAt:Date.now() };
   }
-
-  /* ---------- storage ---------- */
-  function seedItems(){
-    var out=[], i;
-    for(i=0;i<SEED.length;i++){
-      var s=SEED[i], b=BELLS[s[1]];
-      out.push({id:uid(), type:"lesson", day:s[0], start:b[0], end:b[1], subject:s[2], cls:"", room:"", note:""});
-    }
-    return out;
-  }
-  function loadLocal(){
+  function load(){
     try{
       var raw = localStorage.getItem(LS_KEY);
       if(raw){
-        var o=JSON.parse(raw);
-        if(o && Array.isArray(o.items)){ state=o; return; }
+        var o = JSON.parse(raw);
+        if(o && Array.isArray(o.items)){
+          if(!o.profile) o.profile = {name:""};
+          if(!Array.isArray(o.periods) || !o.periods.length) o.periods = defaults().periods;
+          if(!o.guard || !Array.isArray(o.guard.names)) o.guard = gdefaults();
+          if(!o.guard.fixed) o.guard.fixed = {};
+          if(!Array.isArray(o.guard.skips)) o.guard.skips = [];
+          if(!Array.isArray(o.guard.breaks) || o.guard.breaks.length !== 7) o.guard.breaks = [2,2,2,2,2,1,0];
+          state = o; return true;
+        }
       }
     }catch(e){}
-    state = { items: seedItems(), updatedAt: Date.now() };
-    saveLocal();
+    return false;
   }
-  function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
-  function persist(){ state.updatedAt=Date.now(); saveLocal(); renderAll(); }
+  function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+  function persist(){ state.updatedAt = Date.now(); save(); renderAll(); }
+
+  function periods(){ return state.periods.slice().sort(function(a,b){ return toMin(a.start)-toMin(b.start); }); }
+  function breaks(){
+    var ps = periods(), out=[], i;
+    for(i=0;i<ps.length-1;i++){
+      var gap = toMin(ps[i+1].start) - toMin(ps[i].end);
+      if(gap >= 10) out.push({start:ps[i].end, end:ps[i+1].start});
+    }
+    var last = ps[ps.length-1];
+    if(last) out.push({start:last.end, end:fromMin(toMin(last.end)+20)});
+    return out;
+  }
+  function periodOf(it){
+    var ps = periods(), i;
+    for(i=0;i<ps.length;i++) if(ps[i].start===it.start) return i;
+    return -1;
+  }
+  function itemsFor(date){
+    var dk = dateKey(date), wd = date.getDay();
+    return state.items.filter(function(it){
+      return it.type==="once" ? it.date===dk : it.day===wd;
+    }).sort(byTime);
+  }
+
+  /* suggestions: subject + class + room combos, most used first */
+  function combos(){
+    var map = {}, out = [];
+    state.items.forEach(function(it){
+      if(it.type==="once" || !it.subject) return;
+      var k = it.subject+"|"+(it.cls||"")+"|"+(it.room||"");
+      if(!map[k]) { map[k] = {subject:it.subject, cls:it.cls||"", room:it.room||"", n:0}; out.push(map[k]); }
+      map[k].n++;
+    });
+    out.sort(function(a,b){ return b.n-a.n; });
+    return out;
+  }
+  function bestFor(subject){
+    var c = combos(), i;
+    for(i=0;i<c.length;i++) if(c[i].subject===subject) return c[i];
+    return null;
+  }
 
   /* ---------- clock ---------- */
   function tick(){
-    var d=new Date();
+    var d = new Date();
     $("#clock").textContent = pad(d.getHours())+":"+pad(d.getMinutes());
     $("#dateline").textContent = d.toLocaleDateString("he-IL",{weekday:"long",day:"numeric",month:"long"});
-    var m=d.getHours()*60+d.getMinutes();
-    if(m!==lastMinute){ lastMinute=m; renderAll(); }
+    var m = d.getHours()*60+d.getMinutes();
+    if(m !== lastMinute){ lastMinute = m; renderAll(); }
   }
 
-  /* ---------- lookups ---------- */
   function currentItem(){
-    var m=nowMin(), list=itemsFor(new Date()), i;
+    var m = nowMin(), list = itemsFor(new Date()), i;
     for(i=0;i<list.length;i++) if(toMin(list[i].start)<=m && m<toMin(list[i].end)) return list[i];
     return null;
   }
   function upcoming(n){
     var out=[], m=nowMin(), i, k;
     for(k=0;k<8 && out.length<n;k++){
-      var date = addDays(new Date(), k);
-      var list = itemsFor(date);
+      var date = addDays(new Date(), k), list = itemsFor(date);
       for(i=0;i<list.length && out.length<n;i++){
         if(k===0 && toMin(list[i].start)<=m) continue;
-        out.push({ item:list[i], date:date, offset:k });
+        out.push({item:list[i], date:date, offset:k});
       }
     }
     return out;
@@ -334,14 +421,18 @@
 
   /* ---------- home ---------- */
   function renderHome(){
-    var box=$("#status"), cur=currentItem(), up=upcoming(1);
-    box.innerHTML="";
+    var hello = $("#hello");
+    hello.textContent = state.profile.name ? "שלום, " + state.profile.name : "";
+    var box = $("#status"), cur = currentItem(), up = upcoming(1);
+    box.innerHTML = "";
+    if(!state.items.length){
+      box.appendChild(document.createTextNode("המערכת עדיין ריקה — אפשר להתחיל מ\"הוספה ועריכה\"."));
+      return;
+    }
     if(cur){
-      var dot=el("span","dot");
-      box.appendChild(dot);
-      var b=el("b",null,cur.subject);
+      box.appendChild(el("span","dot"));
       box.appendChild(document.createTextNode("עכשיו "));
-      box.appendChild(b);
+      box.appendChild(el("b",null,cur.subject));
       box.appendChild(document.createTextNode(" · עד " + fmt(cur.end) + " (" + minutesText(toMin(cur.end)-nowMin()) + ")"));
     } else if(up.length && up[0].offset===0){
       box.appendChild(document.createTextNode("בעוד " + minutesText(toMin(up[0].item.start)-nowMin()) + ": "));
@@ -349,38 +440,33 @@
       box.appendChild(document.createTextNode(" ב-" + fmt(up[0].item.start)));
     } else if(up.length){
       box.appendChild(document.createTextNode("סיימת להיום. "));
-      box.appendChild(el("b",null, whenLabel(up[0].offset, up[0].date)));
+      box.appendChild(el("b",null,whenLabel(up[0].offset,up[0].date)));
       box.appendChild(document.createTextNode(" מתחילים ב-" + fmt(up[0].item.start)));
-    } else {
-      box.appendChild(document.createTextNode("אין שיעורים במערכת."));
     }
   }
 
-  /* ---------- shared row ---------- */
   function rowFor(it, date, opts){
     opts = opts||{};
     var isToday = dateKey(date)===dateKey(new Date());
-    var m=nowMin(), live = isToday && toMin(it.start)<=m && m<toMin(it.end);
-    var btn=el("button","row"+(it.type==="duty"?" duty":"")+(it.type==="once"?" once":""));
+    var m = nowMin(), live = isToday && toMin(it.start)<=m && m<toMin(it.end);
+    var btn = el("button","row"+(it.type==="duty"?" duty":"")+(it.type==="once"?" once":""));
     if(it.type!=="duty") btn.style.setProperty("--h", hue(it.subject));
     if(live) btn.classList.add("live");
     else if(isToday && opts.dim && toMin(it.end)<=m) btn.classList.add("done");
-    btn.onclick=function(){ openEditor(it); };
+    btn.onclick = function(){ openEditor(it); };
 
-    var t=el("div","t");
+    var t = el("div","t");
     t.appendChild(el("b",null,fmt(it.start)));
     t.appendChild(el("span",null,fmt(it.end)));
     btn.appendChild(t);
 
-    var b=el("div","b");
-    var h=el("h3");
+    var b = el("div","b"), h = el("h3");
     h.appendChild(document.createTextNode(it.subject||"שיעור"));
     if(live) h.appendChild(el("span","badge live","עכשיו"));
     else if(it.type==="once") h.appendChild(el("span","badge once","חד־פעמי"));
     else if(it.type==="duty") h.appendChild(el("span","badge","תורנות"));
     b.appendChild(h);
     var sub=[];
-    if(opts.showDay) sub.push(whenLabel(opts.offset, date));
     if(it.cls) sub.push("כיתה "+it.cls);
     if(it.room) sub.push("חדר "+it.room);
     if(it.note) sub.push(it.note);
@@ -388,20 +474,17 @@
     btn.appendChild(b);
     return btn;
   }
-
   function nowThread(){
     var d=new Date(), w=el("div","thread");
-    w.appendChild(el("em"));
-    w.appendChild(el("b",null,pad(d.getHours())+":"+pad(d.getMinutes())));
-    w.appendChild(el("i"));
+    w.appendChild(el("em")); w.appendChild(el("b",null,pad(d.getHours())+":"+pad(d.getMinutes()))); w.appendChild(el("i"));
     return w;
   }
 
-  /* ---------- today ---------- */
   function renderToday(){
     var today=new Date(), list=itemsFor(today), box=$("#today-list");
     $("#today-title").textContent = "יום " + DAYS[today.getDay()] + ", " + today.toLocaleDateString("he-IL",{day:"numeric",month:"numeric"});
     box.innerHTML="";
+    guardStrip(box, today);
     if(!list.length){
       var e=el("div","empty");
       e.appendChild(el("p",null,"אין שיעורים ביום " + DAYS[today.getDay()] + "."));
@@ -418,27 +501,23 @@
     box.appendChild(rows);
   }
 
-  /* ---------- next two ---------- */
   function renderNext(){
     var box=$("#next-list"); box.innerHTML="";
     var cur=currentItem(), next=upcoming(2), i;
-
     if(cur){
       var c=el("div","big-next");
       c.appendChild(el("p","when","עכשיו · עד " + fmt(cur.end)));
       c.appendChild(el("h3",null,cur.subject));
       c.appendChild(el("p",null,"נשארו " + minutesText(toMin(cur.end)-nowMin())));
+      c.onclick=function(){ openEditor(cur); };
       box.appendChild(c);
     }
-    if(!next.length){
-      box.appendChild(el("p","note","אין שיעורים נוספים בימים הקרובים."));
-      return;
-    }
+    if(!next.length){ box.appendChild(el("p","note","אין שיעורים נוספים בימים הקרובים.")); return; }
     for(i=0;i<next.length;i++){
       var n=next[i], card=el("div","big-next"+(i===0?" first":""));
-      var when = (n.offset===0 ? "בעוד " + minutesText(toMin(n.item.start)-nowMin()) : whenLabel(n.offset,n.date)) +
-                 " · " + fmt(n.item.start) + "–" + fmt(n.item.end);
-      card.appendChild(el("p","when", when));
+      var when=(n.offset===0 ? "בעוד " + minutesText(toMin(n.item.start)-nowMin()) : whenLabel(n.offset,n.date)) +
+               " · " + fmt(n.item.start)+"–"+fmt(n.item.end);
+      card.appendChild(el("p","when",when));
       var title=el("h3"); title.appendChild(document.createTextNode(n.item.subject||"שיעור"));
       if(n.item.type==="once") title.appendChild(el("span","badge once","חד־פעמי"));
       if(n.item.type==="duty") title.appendChild(el("span","badge","תורנות"));
@@ -449,50 +528,96 @@
       if(n.item.note) sub.push(n.item.note);
       if(sub.length) card.appendChild(el("p",null,sub.join(" · ")));
       card.onclick=(function(it){ return function(){ openEditor(it); }; })(n.item);
-      card.style.cursor="pointer";
       box.appendChild(card);
     }
   }
 
-  /* ---------- week ---------- */
+  /* ---------- weekly table ---------- */
+  function cellFor(it, isToday){
+    var m=nowMin();
+    var c = el("button","cell"+(it.type==="duty"?" duty":"")+(it.type==="once"?" once":""));
+    if(it.type!=="duty") c.style.setProperty("--h", hue(it.subject));
+    if(isToday && toMin(it.start)<=m && m<toMin(it.end)) c.classList.add("live");
+    c.appendChild(el("b",null,it.subject||"שיעור"));
+    var meta=[];
+    if(it.cls) meta.push(it.cls);
+    if(it.room) meta.push("חדר "+it.room);
+    if(it.type==="once") meta.push("חד־פעמי");
+    if(it.type==="duty" || meta.length===0) meta.push(fmt(it.start)+"–"+fmt(it.end));
+    c.appendChild(el("small",null,meta.join(" · ")));
+    c.onclick=function(){ openEditor(it); };
+    return c;
+  }
+
   function renderWeek(){
-    var wrap=$("#week"); wrap.innerHTML="";
-    var today=new Date(), m=nowMin();
-    var sunday=addDays(today, -today.getDay());
+    var host=$("#week"); host.innerHTML="";
+    var today=new Date(), sunday=addDays(today,-today.getDay()), ps=periods();
     var days=[0,1,2,3,4,5];
     if(itemsFor(addDays(sunday,6)).length) days.push(6);
 
+    var byDay = days.map(function(d){ return itemsFor(addDays(sunday,d)); });
+    var used = days.map(function(){ return {}; });
+
+    var wrap=el("div","tablewrap"), table=el("table","sched");
+    var thead=el("thead"), htr=el("tr");
+    htr.appendChild(el("th","timecol","שעה"));
     days.forEach(function(d){
-      var date=addDays(sunday,d), list=itemsFor(date), isToday=(dateKey(date)===dateKey(today));
-      var col=el("div","day"+(isToday?" is-today":""));
-      var head=el("header");
-      head.appendChild(el("h3",null,DAYS[d]));
-      head.appendChild(el("small",null, date.getDate()+"/"+(date.getMonth()+1)));
-      col.appendChild(head);
+      var date=addDays(sunday,d);
+      var th=el("th",null,DAYS[d]);
+      if(dateKey(date)===dateKey(today)) th.className="today";
+      htr.appendChild(th);
+    });
+    thead.appendChild(htr); table.appendChild(thead);
 
-      list.forEach(function(it){
-        var c=el("button","cell"+(it.type==="duty"?" duty":"")+(it.type==="once"?" once":""));
-        if(it.type!=="duty") c.style.setProperty("--h",hue(it.subject));
-        if(isToday && toMin(it.start)<=m && m<toMin(it.end)) c.classList.add("live");
-        c.appendChild(el("b",null,it.subject||"שיעור"));
-        var meta=[];
-        if(it.cls) meta.push("כיתה "+it.cls);
-        if(it.room) meta.push("חדר "+it.room);
-        c.appendChild(el("small",null, fmt(it.start)+"–"+fmt(it.end) + (meta.length?" · "+meta.join(" · "):"")));
-        c.onclick=function(){ openEditor(it); };
-        col.appendChild(c);
+    var tbody=el("tbody");
+    ps.forEach(function(p,pi){
+      var tr=el("tr");
+      var th=el("th","timecol");
+      th.appendChild(el("b",null,String(p.n||pi+1)));
+      th.appendChild(el("span",null,p.start));
+      th.appendChild(el("span",null,p.end));
+      tr.appendChild(th);
+      days.forEach(function(d,di){
+        var date=addDays(sunday,d), isToday=dateKey(date)===dateKey(today);
+        var td=el("td");
+        var found=null;
+        byDay[di].forEach(function(it,idx){
+          if(!found && it.start===p.start && !used[di][idx]){ found=it; used[di][idx]=1; }
+        });
+        if(found) td.appendChild(cellFor(found,isToday));
+        else{
+          var blank=el("button","cell blank","+");
+          blank.onclick=(function(day,per,dk){ return function(){
+            openEditor(null,{day:day, date:dk, start:per.start, end:per.end});
+          }; })(d,p,dateKey(date));
+          td.appendChild(blank);
+        }
+        tr.appendChild(td);
       });
-
-      var add=el("button","add","+ הוספה");
-      add.onclick=function(){ openEditor(null,{day:d, date:dateKey(date)}); };
-      col.appendChild(add);
-      wrap.appendChild(col);
+      tbody.appendChild(tr);
     });
 
-    var t=wrap.querySelector(".is-today");
-    if(t && wrap.scrollWidth>wrap.clientWidth){
-      wrap.scrollLeft = t.offsetLeft - wrap.offsetLeft - (wrap.clientWidth-t.clientWidth)/2;
+    /* extras: duties / one-offs / custom times that don't sit on a period */
+    var extras = days.map(function(d,di){
+      return byDay[di].filter(function(it,idx){ return !used[di][idx]; });
+    });
+    var maxExtra = extras.reduce(function(a,b){ return Math.max(a,b.length); },0);
+    var r;
+    for(r=0;r<maxExtra;r++){
+      var tr2=el("tr");
+      var th2=el("th","timecol");
+      th2.appendChild(el("span","extra-label", r===0 ? "נוסף" : " "));
+      tr2.appendChild(th2);
+      days.forEach(function(d,di){
+        var td=el("td"), it=extras[di][r];
+        if(it) td.appendChild(cellFor(it, dateKey(addDays(sunday,d))===dateKey(today)));
+        tr2.appendChild(td);
+      });
+      tbody.appendChild(tr2);
     }
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    host.appendChild(wrap);
   }
 
   function refreshDatalists(){
@@ -506,11 +631,13 @@
   }
 
   function renderAll(){
+    if(!state) return;
     refreshDatalists();
     if(view==="home") renderHome();
     if(view==="today") renderToday();
     if(view==="week") renderWeek();
     if(view==="next") renderNext();
+    if(view==="guard") renderGuard();
   }
 
   /* ---------- sheets ---------- */
@@ -528,19 +655,18 @@
 
   function openEditor(item, prefill){
     prefill = prefill||{};
-    var isNew=!item;
-    var d=new Date();
+    var isNew = !item, d = new Date();
     var data = item ? JSON.parse(JSON.stringify(item)) : {
       id:uid(), type:"lesson",
       day: prefill.day!=null ? prefill.day : d.getDay(),
       date: prefill.date || dateKey(d),
-      start:"08:00", end:"08:50", subject:"", cls:"", room:"", note:""
+      start: prefill.start || periods()[0].start,
+      end: prefill.end || periods()[0].end,
+      subject:"", cls:"", room:"", note:""
     };
-    if(!data.date) data.date = dateKey(d);
-    if(data.day==null) data.day = d.getDay();
+    var s = sheet(isNew ? "הוספה למערכת" : "עריכה");
 
-    var s=sheet(isNew ? "הוספה למערכת" : "עריכה");
-
+    /* type switch */
     var seg=el("div","seg"), typeBtns={};
     [["lesson","שיעור"],["duty","תורנות"],["once","חד־פעמי"]].forEach(function(p){
       var b=el("button",null,p[1]); b.type="button";
@@ -549,12 +675,28 @@
     });
     s.appendChild(seg);
 
+    /* recent combos */
+    var recent = el("div","recent");
     var subject=el("input"); subject.type="text"; subject.value=data.subject; subject.setAttribute("list","subjects");
-    var fSubject=field("מה זה?", subject); s.appendChild(fSubject);
+    var cls=el("input"); cls.type="text"; cls.value=data.cls; cls.setAttribute("list","classes");
+    var room=el("input"); room.type="text"; room.value=data.room; room.setAttribute("list","rooms"); room.placeholder="חצר / 14";
+    combos().slice(0,8).forEach(function(c){
+      var label = c.subject + (c.cls ? " · " + c.cls : "");
+      var b=el("button",null,label); b.type="button";
+      b.style.setProperty("--h", hue(c.subject));
+      b.onclick=function(){ subject.value=c.subject; cls.value=c.cls; if(!room.value) room.value=c.room; };
+      recent.appendChild(b);
+    });
+    if(recent.children.length) s.appendChild(recent);
+
+    s.appendChild(field("מה זה?", subject));
+    subject.addEventListener("change", function(){
+      if(cls.value) return;
+      var b=bestFor(subject.value.trim());
+      if(b){ cls.value=b.cls; if(!room.value) room.value=b.room; }
+    });
 
     var two1=el("div","two");
-    var cls=el("input"); cls.type="text"; cls.value=data.cls; cls.setAttribute("list","classes"); cls.placeholder="ויתור 2";
-    var room=el("input"); room.type="text"; room.value=data.room; room.setAttribute("list","rooms"); room.placeholder="חצר / 14";
     two1.appendChild(field("כיתה",cls)); two1.appendChild(field("מקום",room));
     s.appendChild(two1);
 
@@ -565,22 +707,43 @@
     var dateIn=el("input"); dateIn.type="date"; dateIn.value=data.date;
     var fDate=field("תאריך", dateIn); s.appendChild(fDate);
 
+    /* period picker */
+    var pickWrap=el("div","periods");
+    var fPick=field("שעה", pickWrap); s.appendChild(fPick);
+
     var two2=el("div","two");
     var start=el("input"); start.type="time"; start.value=data.start; start.step=300;
     var end=el("input"); end.type="time"; end.value=data.end; end.step=300;
     two2.appendChild(field("משעה",start)); two2.appendChild(field("עד שעה",end));
-    s.appendChild(two2);
+    var fTimes=el("div"); fTimes.appendChild(two2); s.appendChild(fTimes);
 
-    var chips=el("div","chips"); s.appendChild(chips);
-    function fillChips(t){
-      chips.innerHTML="";
-      var src = (t==="duty") ? BREAKS : BELLS;
-      src.forEach(function(b,i){
-        var c=el("button",null,(t==="duty" ? "הפסקה "+(i+1) : "שיעור "+(i+1)) + " · " + b[0]);
-        c.type="button";
-        c.onclick=function(){ start.value=b[0]; end.value=b[1]; };
-        chips.appendChild(c);
+    function markPicked(){
+      var kids=pickWrap.children, i;
+      for(i=0;i<kids.length;i++){
+        kids[i].classList.toggle("on", kids[i].getAttribute("data-start")===start.value);
+      }
+      var known=false;
+      for(i=0;i<kids.length;i++) if(kids[i].classList.contains("on")) known=true;
+      fTimes.classList.toggle("hidden", known);
+    }
+    function fillPicker(type){
+      pickWrap.innerHTML="";
+      var src = (type==="duty") ? breaks() : periods();
+      src.forEach(function(p,i){
+        var b=el("button"); b.type="button";
+        b.setAttribute("data-start", p.start);
+        b.appendChild(el("b",null, type==="duty" ? "הפסקה "+(i+1) : "שיעור "+(p.n||i+1)));
+        b.appendChild(document.createTextNode(p.start+"–"+p.end));
+        b.onclick=function(){ start.value=p.start; end.value=p.end; markPicked(); };
+        pickWrap.appendChild(b);
       });
+      var other=el("button"); other.type="button"; other.setAttribute("data-start","__");
+      other.appendChild(el("b",null,"שעה אחרת"));
+      other.appendChild(document.createTextNode("ידני"));
+      other.onclick=function(){ fTimes.classList.remove("hidden"); var k=pickWrap.children,i;
+        for(i=0;i<k.length;i++) k[i].classList.remove("on"); };
+      pickWrap.appendChild(other);
+      markPicked();
     }
 
     var note=el("input"); note.type="text"; note.value=data.note||"";
@@ -591,40 +754,39 @@
       for(var k in typeBtns) typeBtns[k].classList.toggle("on", k===t);
       fDay.classList.toggle("hidden", t==="once");
       fDate.classList.toggle("hidden", t!=="once");
-      fillChips(t);
+      recent.classList.toggle("hidden", t==="duty");
+      fillPicker(t);
       if(t==="duty" && !subject.value) subject.value="תורנות הפסקה";
       subject.placeholder = t==="duty" ? "תורנות הפסקה" : (t==="once" ? "אסיפת הורים / מבחן" : "מתמטיקה");
     }
     setType(data.type||"lesson");
 
     var actions=el("div","sheet-actions");
-    var save=el("button","cta","שמירה");
-    save.onclick=function(){
-      data.subject=subject.value.trim();
-      data.cls=cls.value.trim(); data.room=room.value.trim(); data.note=note.value.trim();
+    var saveBtn=el("button","cta","שמירה");
+    saveBtn.onclick=function(){
+      data.subject=subject.value.trim(); data.cls=cls.value.trim();
+      data.room=room.value.trim(); data.note=note.value.trim();
       data.day=parseInt(daySel.value,10);
       data.date=dateIn.value || dateKey(new Date());
-      data.start=start.value||"08:00";
+      data.start=start.value||periods()[0].start;
       data.end=end.value||data.start;
       if(!data.subject){ subject.focus(); subject.placeholder="צריך למלא שם"; return; }
-      if(toMin(data.end)<=toMin(data.start)){
-        var t2=toMin(data.start)+45;
-        data.end=pad(Math.floor(t2/60)%24)+":"+pad(t2%60);
-      }
+      if(toMin(data.end)<=toMin(data.start)) data.end=fromMin(toMin(data.start)+45);
       if(data.type==="once") data.day=new Date(data.date+"T00:00:00").getDay();
       var idx=-1,i;
       for(i=0;i<state.items.length;i++) if(state.items[i].id===data.id){ idx=i; break; }
       if(idx>=0) state.items[idx]=data; else state.items.push(data);
       closeModal(); persist();
     };
-    actions.appendChild(save);
+    actions.appendChild(saveBtn);
 
     if(!isNew){
       var dup=el("button","ghost","שכפול");
       dup.onclick=function(){
         var c2=JSON.parse(JSON.stringify(data));
         c2.id=uid(); c2.subject=subject.value.trim(); c2.cls=cls.value.trim(); c2.room=room.value.trim();
-        c2.note=note.value.trim(); c2.start=start.value; c2.end=end.value; c2.day=parseInt(daySel.value,10); c2.date=dateIn.value;
+        c2.note=note.value.trim(); c2.start=start.value; c2.end=end.value;
+        c2.day=parseInt(daySel.value,10); c2.date=dateIn.value;
         closeModal(); openEditor(c2);
       };
       actions.appendChild(dup);
@@ -636,88 +798,421 @@
       actions.appendChild(del);
     }
     s.appendChild(actions);
-    setTimeout(function(){ if(!subject.value) subject.focus(); },80);
+    setTimeout(function(){ if(!subject.value && recent.children.length===0) subject.focus(); },80);
   }
 
   function openAddMenu(){
     var s=sheet("מה להוסיף?");
     var list=el("div","menu-list");
-    var opts=[
-      ["שיעור קבוע במערכת","lesson"],
-      ["תורנות הפסקה (חוזרת כל שבוע)","duty"],
-      ["משהו חד־פעמי לתאריך מסוים","once"]
-    ];
-    opts.forEach(function(o){
+    [["שיעור קבוע במערכת",0],["תורנות הפסקה (חוזרת כל שבוע)",1],["משהו חד־פעמי לתאריך מסוים",2]].forEach(function(o){
       var b=el("button",null,o[0]);
-      b.onclick=function(){ closeModal(); openEditor(null,{}); setTimeout(function(){
-        var seg=document.querySelector(".seg");
-        if(seg){ var map={lesson:0,duty:1,once:2}; seg.children[map[o[1]]].click(); }
-      },0); };
+      b.onclick=function(){
+        closeModal(); openEditor(null,{});
+        setTimeout(function(){ var seg=document.querySelector(".seg"); if(seg) seg.children[o[1]].click(); },0);
+      };
       list.appendChild(b);
     });
     s.appendChild(list);
   }
 
+  function openPeriods(){
+    var s=sheet("שעות בית הספר");
+    s.appendChild(el("p","note","השעות האלה מופיעות ככפתורים בכל הוספת שיעור, ובונות את הטבלה השבועית."));
+    var host=el("div");
+    function draw(){
+      host.innerHTML="";
+      state.periods.forEach(function(p,i){
+        var r=el("div","prow");
+        r.appendChild(el("b",null,String(i+1)));
+        var a=el("input"); a.type="time"; a.step=300; a.value=p.start;
+        a.onchange=function(){ p.start=a.value; };
+        var b=el("input"); b.type="time"; b.step=300; b.value=p.end;
+        b.onchange=function(){ p.end=b.value; };
+        r.appendChild(a); r.appendChild(b);
+        var x=el("button","x","✕");
+        x.onclick=function(){ state.periods.splice(i,1); draw(); };
+        r.appendChild(x);
+        host.appendChild(r);
+      });
+    }
+    draw(); s.appendChild(host);
+    var add=el("button","ghost","+ שעה נוספת");
+    add.onclick=function(){
+      var last=state.periods[state.periods.length-1];
+      var st=last?fromMin(toMin(last.end)):"08:00";
+      state.periods.push({n:state.periods.length+1, start:st, end:fromMin(toMin(st)+45)});
+      draw();
+    };
+    s.appendChild(add);
+    var done=el("button","cta","שמירה");
+    done.style.width="100%"; done.style.marginTop="14px";
+    done.onclick=function(){
+      state.periods.forEach(function(p,i){ p.n=i+1; });
+      closeModal(); persist();
+    };
+    s.appendChild(done);
+  }
+
   function openSettings(){
-    var s=sheet("הגדרות וגיבוי");
-    s.appendChild(el("p","note", state.items.length + " פריטים במערכת. הכול נשמר במכשיר הזה ועובד גם בלי אינטרנט."));
+    var s=sheet("הגדרות");
+    var name=el("input"); name.type="text"; name.value=state.profile.name||""; name.placeholder="השם שלך";
+    name.onchange=function(){ state.profile.name=name.value.trim(); persist(); };
+    s.appendChild(field("שם", name));
 
-    var exp=el("button","cta","שמירת גיבוי");
-    exp.style.width="100%";
-    exp.onclick=function(){ doExport(exp); };
-    s.appendChild(exp);
+    var list=el("div","menu-list");
+    var bP=el("button",null,"שעות בית הספר (" + state.periods.length + " שעות)");
+    bP.onclick=function(){ closeModal(); openPeriods(); };
+    list.appendChild(bP);
 
-    var imp=el("input"); imp.type="file"; imp.accept="application/json,.json";
-    imp.onchange=function(){
-      var f=imp.files&&imp.files[0]; if(!f) return;
+    var bG=el("button",null,"שמירות הפסקה — ניהול הסבב");
+    bG.onclick=function(){ closeModal(); openGuardSetup(); };
+    list.appendChild(bG);
+
+    var bE=el("button",null,"שמירת גיבוי לקובץ");
+    bE.onclick=function(){ doExport(bE); };
+    list.appendChild(bE);
+
+    var bI=el("button",null,"שחזור מקובץ גיבוי");
+    bI.onclick=function(){ pickFile(function(o){ state=o; closeModal(); persist(); }); };
+    list.appendChild(bI);
+
+    var bC=el("button",null,"מחיקת כל השיעורים");
+    bC.style.color="var(--now)";
+    bC.onclick=function(){ if(confirm("למחוק את כל הפריטים במערכת?")){ state.items=[]; closeModal(); persist(); } };
+    list.appendChild(bC);
+    s.appendChild(list);
+    s.appendChild(el("p","note", state.items.length + " פריטים במערכת. הכול נשמר במכשיר הזה בלבד — כדאי לשמור גיבוי מדי פעם."));
+  }
+
+  function pickFile(cb){
+    var inp=document.createElement("input");
+    inp.type="file"; inp.accept="application/json,.json";
+    inp.onchange=function(){
+      var f=inp.files&&inp.files[0]; if(!f) return;
       var r=new FileReader();
       r.onload=function(){
         try{
           var o=JSON.parse(r.result);
-          if(o&&Array.isArray(o.items)){ state.items=o.items; closeModal(); persist(); }
-          else alert("הקובץ לא מכיל מערכת שעות.");
+          if(o && Array.isArray(o.items)){
+            if(!o.profile) o.profile={name:""};
+            if(!Array.isArray(o.periods)||!o.periods.length) o.periods=defaults().periods;
+            if(!o.guard || !Array.isArray(o.guard.names)) o.guard=gdefaults();
+            if(!o.guard.fixed) o.guard.fixed={};
+            if(!Array.isArray(o.guard.skips)) o.guard.skips=[];
+            if(!Array.isArray(o.guard.breaks) || o.guard.breaks.length!==7) o.guard.breaks=[2,2,2,2,2,1,0];
+            cb(o);
+          } else alert("הקובץ לא מכיל מערכת שעות.");
         }catch(e){ alert("לא הצלחתי לקרוא את הקובץ."); }
       };
       r.readAsText(f);
     };
-    s.appendChild(field("שחזור מקובץ גיבוי", imp));
-
-    var reset=el("button","ghost","החזרת המערכת המקורית");
-    reset.style.width="100%";
-    reset.onclick=function(){
-      if(confirm("להחזיר את המערכת כפי שהוזנה מהתמונה? כל השינויים יימחקו.")){
-        state.items=seedItems(); closeModal(); persist();
-      }
-    };
-    s.appendChild(reset);
-
-    var clear=el("button","danger","מחיקת הכול");
-    clear.style.width="100%";
-    clear.onclick=function(){ if(confirm("למחוק את כל הפריטים?")){ state.items=[]; closeModal(); persist(); } };
-    s.appendChild(clear);
+    inp.click();
   }
 
   function doExport(btn){
-    var payload=JSON.stringify({items:state.items, updatedAt:state.updatedAt}, null, 2);
+    var payload=JSON.stringify(state,null,2);
+    var name="מערכת-שעות.json";
     if(window.claude && window.claude.use){
       window.claude.use("downloads").then(function(dl){
         if(dl&&dl.save){
-          dl.save({filename:"מערכת-שעות.json", data:payload})
-            .then(function(){ btn.textContent="הגיבוי נשמר"; })
-            .catch(function(){ copyFallback(payload,btn); });
-        } else copyFallback(payload,btn);
-      }).catch(function(){ copyFallback(payload,btn); });
-    } else copyFallback(payload,btn);
+          dl.save({filename:name,data:payload}).then(function(){ btn.textContent="הגיבוי נשמר"; })
+            .catch(function(){ blobSave(payload,name,btn); });
+        } else blobSave(payload,name,btn);
+      }).catch(function(){ blobSave(payload,name,btn); });
+    } else blobSave(payload,name,btn);
   }
-  function copyFallback(text,btn){
-    try{ navigator.clipboard.writeText(text); btn.textContent="הועתק ללוח"; }
-    catch(e){ btn.textContent="לא הצלחתי לשמור"; }
+  function blobSave(text,name,btn){
+    try{
+      var blob=new Blob([text],{type:"application/json"});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement("a"); a.href=url; a.download=name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); },1000);
+      btn.textContent="הגיבוי ירד למכשיר";
+    }catch(e){
+      try{ navigator.clipboard.writeText(text); btn.textContent="הועתק ללוח"; }
+      catch(e2){ btn.textContent="לא הצלחתי לשמור"; }
+    }
+  }
+
+
+  /* ---------- guard duty (שמירות הפסקה) ---------- */
+  function gdefaults(){
+    return { title:"", names:[], start:dateKey(new Date()), skips:[], fixed:{}, breaks:[2,2,2,2,2,1,0] };
+  }
+  function G(){ if(!state.guard) state.guard = gdefaults(); return state.guard; }
+
+  function gpairs(){
+    var n = G().names, out = [], i = 0, j = n.length - 1;
+    while(i < j){ out.push([n[i], n[j]]); i++; j--; }
+    if(i === j && n.length) out.push([n[i], n[0]]);
+    return out;
+  }
+  function isDutyDay(date){
+    var g = G();
+    if(!g.breaks[date.getDay()]) return false;
+    if(g.skips.indexOf(dateKey(date)) >= 0) return false;
+    return true;
+  }
+  function dutyIndex(date){
+    var g = G(), P = gpairs().length;
+    if(!P) return null;
+    var dk = dateKey(date);
+    if(g.fixed[dk] != null) return ((g.fixed[dk] % P) + P) % P;
+    if(!isDutyDay(date)) return null;
+    var st = new Date(g.start + "T00:00:00");
+    if(isNaN(st.getTime())) return null;
+    var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    if(d < st) return null;
+    var count = 0, cur = new Date(st.getTime()), k = 0;
+    while(dateKey(cur) !== dk && k < 3000){
+      if(isDutyDay(cur)) count++;
+      cur.setDate(cur.getDate() + 1); k++;
+    }
+    return count % P;
+  }
+  function dutyFor(date){
+    var i = dutyIndex(date);
+    if(i === null) return null;
+    var p = gpairs()[i];
+    if(!p) return null;
+    return { names: p, idx: i, breaks: G().breaks[date.getDay()] || 1 };
+  }
+  function nextDuties(from, n){
+    var out = [], d = new Date(from.getTime()), k = 0;
+    d.setHours(0, 0, 0, 0);
+    while(out.length < n && k < 160){
+      var du = dutyFor(d);
+      if(du) out.push({ date: new Date(d.getTime()), duty: du });
+      d.setDate(d.getDate() + 1); k++;
+    }
+    return out;
+  }
+  function postpone(date){
+    var cur = dutyIndex(date);
+    if(cur === null) return;
+    var d = new Date(date.getTime());
+    d.setDate(d.getDate() + 1);
+    var k = 0;
+    while(!isDutyDay(d) && k < 90){ d.setDate(d.getDate() + 1); k++; }
+    var nxt = dutyIndex(d);
+    if(nxt === null) return;
+    G().fixed[dateKey(date)] = nxt;
+    G().fixed[dateKey(d)] = cur;
+    persist();
+  }
+  function dayLabel(date){
+    return "יום " + DAYS[date.getDay()] + " " + date.getDate() + "." + (date.getMonth() + 1);
+  }
+  function breaksLabel(n){ return n === 1 ? "הפסקה אחת" : n + " הפסקות"; }
+
+  function reportText(weeks){
+    var g = G(), lines = [];
+    lines.push("*שמירות הפסקה" + (g.title ? " – " + g.title : "") + "*");
+    var d = new Date(); d.setHours(0, 0, 0, 0);
+    var end = new Date(d.getTime()); end.setDate(end.getDate() + weeks * 7);
+    var k = 0;
+    while(d < end && k < 40){
+      var du = dutyFor(d);
+      if(du){
+        lines.push("");
+        lines.push(dayLabel(d) + " · " + breaksLabel(du.breaks));
+        lines.push(du.names[0] + "  +  " + du.names[1]);
+      }
+      d.setDate(d.getDate() + 1); k++;
+    }
+    return lines.join("\n");
+  }
+
+  function dutyCard(label, date, isMain){
+    var c = el("div", "gcard" + (isMain ? " main" : ""));
+    c.appendChild(el("p", "w", label + " · " + dayLabel(date)));
+    var du = dutyFor(date);
+    if(!du){
+      c.appendChild(el("p", "names", "אין שמירה"));
+      c.appendChild(el("p", "meta", date.getDay() === 6 ? "שבת" : "יום ללא שמירה"));
+      return c;
+    }
+    c.appendChild(el("p", "names", du.names[0] + "  +  " + du.names[1]));
+    c.appendChild(el("p", "meta", breaksLabel(du.breaks) + " · תור " + (du.idx + 1) + " מתוך " + gpairs().length));
+    if(isMain){
+      var b = el("button", "act", "מישהו לא הגיע — דחיית התור ליום הבא");
+      b.onclick = function(){ postpone(date); };
+      c.appendChild(b);
+    }
+    return c;
+  }
+
+  function renderGuard(){
+    var host = $("#guard-body");
+    if(!host) return;
+    host.innerHTML = "";
+    if(!G().names.length){
+      var e = el("div", "empty");
+      e.appendChild(el("p", null, "כדי להתחיל צריך את רשימת שמות הילדים."));
+      var b = el("button", "cta", "הוספת רשימת שמות");
+      b.onclick = openGuardSetup;
+      e.appendChild(b);
+      host.appendChild(e);
+      return;
+    }
+    var today = new Date();
+    host.appendChild(dutyCard("היום", today, true));
+    host.appendChild(dutyCard("מחר", addDays(today, 1), false));
+
+    var gb = el("div", "gbtns");
+    var b1 = el("button", null, "דוח לשבוע");
+    b1.onclick = function(){ openReport(1); };
+    var b2 = el("button", null, "דוח לשבועיים");
+    b2.onclick = function(){ openReport(2); };
+    gb.appendChild(b1); gb.appendChild(b2);
+    host.appendChild(gb);
+
+    host.appendChild(el("p", "note", "התורים הבאים"));
+    var list = el("div");
+    nextDuties(today, 12).forEach(function(x, i){
+      var r = el("div", "grow" + (i === 0 && dateKey(x.date) === dateKey(today) ? " is-today" : ""));
+      r.appendChild(el("b", null, x.duty.names[0] + " + " + x.duty.names[1]));
+      r.appendChild(el("span", null, dayLabel(x.date)));
+      list.appendChild(r);
+    });
+    host.appendChild(list);
+    host.appendChild(el("p", "note", G().names.length + " ילדים · סבב של " + gpairs().length + " תורים"));
+  }
+
+  function guardStrip(box, date){
+    var du = dutyFor(date);
+    if(!du) return;
+    var c = el("div", "gcard");
+    c.style.marginBottom = "12px";
+    c.appendChild(el("p", "w", "שמירת הפסקה היום"));
+    c.appendChild(el("p", "names", du.names[0] + "  +  " + du.names[1]));
+    c.style.cursor = "pointer";
+    c.onclick = function(){ go("guard"); };
+    box.appendChild(c);
+  }
+
+  function openReport(weeks){
+    var txt = reportText(weeks);
+    var s = sheet(weeks === 1 ? "דוח לשבוע הקרוב" : "דוח לשבועיים הקרובים");
+    var pre = el("div", "report", txt);
+    s.appendChild(pre);
+    var actions = el("div", "sheet-actions");
+    var shareBtn = el("button", "cta", "שליחה בוואטסאפ");
+    shareBtn.onclick = function(){
+      if(navigator.share){
+        navigator.share({ text: txt }).catch(function(){});
+      } else {
+        try{ navigator.clipboard.writeText(txt); shareBtn.textContent = "הועתק — אפשר להדביק"; }
+        catch(e){ shareBtn.textContent = "לא הצלחתי להעתיק"; }
+      }
+    };
+    var copyBtn = el("button", "ghost", "העתקה");
+    copyBtn.onclick = function(){
+      try{ navigator.clipboard.writeText(txt); copyBtn.textContent = "הועתק"; }
+      catch(e){ copyBtn.textContent = "לא הצלחתי"; }
+    };
+    actions.appendChild(shareBtn); actions.appendChild(copyBtn);
+    s.appendChild(actions);
+  }
+
+  function openGuardSetup(){
+    var g = G();
+    var s = sheet("ניהול שמירות");
+
+    var title = el("input"); title.type = "text"; title.value = g.title || ""; title.placeholder = "ויתור 2";
+    s.appendChild(field("שם הכיתה (מופיע בדוח)", title));
+
+    var start = el("input"); start.type = "date"; start.value = g.start;
+    s.appendChild(field("תאריך תחילת הסבב", start));
+
+    var ta = el("textarea"); ta.className = "names";
+    ta.value = g.names.join("\n");
+    ta.placeholder = "שם בכל שורה";
+    s.appendChild(field("רשימת הילדים (לפי הסדר)", ta));
+    var cnt = el("p", "note", g.names.length + " ילדים · " + gpairs().length + " תורים בסבב");
+    s.appendChild(cnt);
+    ta.addEventListener("input", function(){
+      var n = ta.value.split("\n").map(function(x){ return x.trim(); }).filter(Boolean).length;
+      cnt.textContent = n + " ילדים · " + (Math.floor(n / 2) + (n % 2)) + " תורים בסבב";
+    });
+
+    s.appendChild(el("p", "note", "ימים ללא שמירה (חגים, חופשות, טיולים) — התור נדחה ולא מתקדם."));
+    var hd = el("input"); hd.type = "date";
+    var chips = el("div", "chiprow");
+    function drawChips(){
+      chips.innerHTML = "";
+      g.skips.slice().sort().forEach(function(dk, i){
+        var sp = el("span");
+        var dd = new Date(dk + "T00:00:00");
+        sp.appendChild(document.createTextNode(dd.getDate() + "." + (dd.getMonth() + 1)));
+        var x = el("button", null, "✕");
+        x.onclick = function(){ g.skips.splice(g.skips.indexOf(dk), 1); drawChips(); };
+        sp.appendChild(x);
+        chips.appendChild(sp);
+      });
+      if(!g.skips.length) chips.appendChild(el("span", null, "אין ימים מסומנים"));
+    }
+    drawChips();
+    hd.onchange = function(){
+      if(hd.value && g.skips.indexOf(hd.value) < 0){ g.skips.push(hd.value); drawChips(); hd.value = ""; }
+    };
+    s.appendChild(field("הוספת יום ללא שמירה", hd));
+    s.appendChild(chips);
+
+    var fri = el("select");
+    [["1", "הפסקה אחת"], ["2", "שתי הפסקות"], ["0", "אין שמירה בשישי"]].forEach(function(o){
+      var op = document.createElement("option"); op.value = o[0]; op.textContent = o[1];
+      if(String(g.breaks[5]) === o[0]) op.selected = true;
+      fri.appendChild(op);
+    });
+    s.appendChild(field("יום שישי", fri));
+
+    var cyc = el("div");
+    cyc.style.marginTop = "14px";
+    function drawCycle(){
+      cyc.innerHTML = "";
+      var cur = dutyIndex(new Date());
+      gpairs().forEach(function(p, i){
+        var r = el("div", "cyc" + (i === cur ? " on" : ""));
+        r.appendChild(el("span", null, p[0] + " + " + p[1]));
+        r.appendChild(el("i", null, "תור " + (i + 1)));
+        cyc.appendChild(r);
+      });
+    }
+    var showCyc = el("button", "ghost", "הצגת הסבב המלא");
+    showCyc.style.width = "100%";
+    showCyc.onclick = function(){ drawCycle(); showCyc.classList.add("hidden"); };
+    s.appendChild(showCyc);
+    s.appendChild(cyc);
+
+    var save = el("button", "cta", "שמירה");
+    save.style.width = "100%"; save.style.marginTop = "16px";
+    save.onclick = function(){
+      g.title = title.value.trim();
+      var newStart = start.value || g.start;
+      var names = ta.value.split("\n").map(function(x){ return x.trim(); }).filter(Boolean);
+      if(newStart !== g.start || names.join("|") !== g.names.join("|")) g.fixed = {};
+      g.start = newStart;
+      g.names = names;
+      g.breaks[5] = parseInt(fri.value, 10);
+      closeModal(); persist();
+    };
+    s.appendChild(save);
+
+    var reset = el("button", "danger", "איפוס הסבב להתחלה (מהיום)");
+    reset.style.width = "100%";
+    reset.onclick = function(){
+      g.start = dateKey(new Date()); g.fixed = {};
+      closeModal(); persist();
+    };
+    s.appendChild(reset);
   }
 
   /* ---------- nav ---------- */
   function go(v){
     view=v;
-    ["home","today","week","next"].forEach(function(n){
+    ["home","today","week","next","guard"].forEach(function(n){
       var node=document.getElementById("v-"+n);
       if(node) node.classList.toggle("hidden", n!==v);
     });
@@ -728,17 +1223,37 @@
     var t=e.target.closest ? e.target.closest("[data-go]") : null;
     if(t) go(t.getAttribute("data-go"));
   });
-  $("#btn-settings").onclick=openSettings;
-  $("#open-add").onclick=openAddMenu;
-  $("#add-today").onclick=function(){ openEditor(null,{day:new Date().getDay(), date:dateKey(new Date())}); };
   document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeModal(); });
+  $("#btn-settings").onclick=function(){ openSettings(); };
+  $("#open-add").onclick=openAddMenu;
+  var gsBtn=$("#guard-setup"); if(gsBtn) gsBtn.onclick=openGuardSetup;
+  $("#add-today").onclick=function(){ openEditor(null,{day:new Date().getDay(), date:dateKey(new Date())}); };
 
-  loadLocal();
-  tick();
-  go("home");
-  setInterval(tick, 1000);
-  document.addEventListener("visibilitychange", function(){ if(!document.hidden) tick(); });
-  $("#sync").textContent = "נשמר במכשיר · עובד גם בלי אינטרנט";
+  /* ---------- boot ---------- */
+  function startApp(){
+    $("#onboarding").classList.add("hidden");
+    $("#app-shell").classList.remove("hidden");
+    tick(); go("home");
+    setInterval(tick,1000);
+    document.addEventListener("visibilitychange", function(){ if(!document.hidden) tick(); });
+  }
+
+  if(load()){
+    startApp();
+  } else {
+    $("#app-shell").classList.add("hidden");
+    $("#onboarding").classList.remove("hidden");
+    $("#ob-start").onclick=function(){
+      state=defaults();
+      state.profile.name=$("#ob-name").value.trim();
+      save(); startApp();
+      setTimeout(openAddMenu, 400);
+    };
+    $("#ob-restore").onclick=function(){
+      pickFile(function(o){ state=o; save(); startApp(); });
+    };
+    $("#ob-name").addEventListener("keydown", function(e){ if(e.key==="Enter") $("#ob-start").click(); });
+  }
 })();
 </script>
 <script>

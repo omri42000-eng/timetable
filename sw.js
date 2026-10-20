@@ -1,6 +1,6 @@
 /* Service worker — makes the app open instantly and work with no internet.
    Bump CACHE when you change index.html so phones pick up the new version. */
-var CACHE = "timetable-v1";
+var CACHE = "timetable-v3";
 var ASSETS = [
   "./",
   "./index.html",
